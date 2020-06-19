@@ -1,0 +1,12 @@
+{
+  "name": "covid19-bot",
+  "version": "1.0.0",
+  "description": "Gives updates about the COVID-19 cases in India",
+  "main": "index.js",
+  "author": "Vansh Jain",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "node-fetch": "^2.6.0"
+  }
+}
