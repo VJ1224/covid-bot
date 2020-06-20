@@ -1,110 +1,50 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const auth = require('./auth.json');
-const fetch = require('node-fetch');
+const config = require('./config.json');
+const fs = require('fs');
+client.commands = new Discord.Collection();
 
-var stateList = ["MH: Maharashtra", "TN: Tamil Nadu", "DL: Delhi", "GJ: Gujarat",
-"UP: Uttar Pradesh", "RJ: Rajasthan", "WB: West Bengal", "MP: Madhya Pradesh", "HR: Haryana",
-"KA: Karnataka", "AP: Andhra Pradesh", "BR: Bihar", "TG: Telangana",
-"JK: Jammu and Kashmir", "AS: Assam", "OR: Odisha", "PB: Punjab", "KL: Kerala", "UT: Uttarakhand",
-"CT: Chhattisgarh", "JH: Jharkhand", "TR: Tripura", "LA: Ladakh", "GA: Goa", "HP: Himachal Pradesh",
-"MN: Manipur", "CH: Chandigarh", "PY: Puducherry", "NL: Nagaland", "MZ: Mizoram",
-"AR: Arunachal Pradesh", "SK: Sikkim", "DN: Daman and Diu", "AN: Andaman and Nicobar Islands",
-"ML: Meghalaya", "LD: Lakshadweep"]
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-var validStates = ["MH", "TN", "DL", "GJ", "UP", "RJ", "WB", "MP", "HR", "KA", "AP", "BR", "TG",
-"JK", "AS", "OR", "PB", "KL", "UT", "CT", "JH", "TR", "LA", "GA", "HP", "MN", "CH", "PY", "NL", "MZ",
-"AR", "SK", "DN", "AN", "ML", "LD"]
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 client.once('ready', () => {
 	console.log('Connected');
 });
 
 client.on('message', async message => {
-	if (!message.content.startsWith(auth.prefix) || message.author.bot) return;
+	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
-	const args = message.content.slice(auth.prefix.length).split(' ');
-	const command = args.shift().toLowerCase();
+	const args = message.content.slice(config.prefix.length).split(' ');
+	const commandName = args.shift().toLowerCase();
 
-	const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());
+	const command = client.commands.get(commandName)
+		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-	switch (command) {
-		case 'ping':
-			message.channel.send('Pong');
-			break;
+	if (!command) {
+		message.reply('Not a valid command, use !help to see a list of valid commands.')
+		return;
+	}
 
-		case 'beep':
-			message.channel.send('Bop');
-			break;
+	if (command.args && !args.length) {
+		let reply = "You didn't provide any arguments, " + message.author.username + ".";
 
-		case 'bop':
-			message.channel.send('Beep');
-			break;
+		if (command.usage) {
+			reply += "\nThe proper usage would be: "+ config.prefix + command.name + " " + command.usage;
+		}
 
-		case 'bot-info':
-			message.channel.send('This is a COVID-19 Information bot that gives information regarding the cases in India. \nCreated by Vansh Jain.')
-			break;
+		return message.channel.send(reply);
+	}
 
-		case 'user-info':
-			message.channel.send('Your username: ' + message.author.username +
-			"\nYour ID: " + message.author.id);
-			break;
-
-		case 'cases':
-			message.channel.send("India:\n" + nationalData['statewise'][0]['confirmed'] + " confirmed cases\n" +
-			nationalData['statewise'][0]['active'] + " active cases\n" +
-			nationalData['statewise'][0]['recovered'] + " recovered\n" +
-			nationalData['statewise'][0]['deaths'] + " deaths");
-			break;
-
-		case 'daily':
-			var length = nationalData['cases_time_series'].length
-			message.channel.send("India, " + nationalData['cases_time_series'][length-1]['date'] + ":" +
-			"\n" + nationalData['cases_time_series'][length-1]['dailyconfirmed'] + " new cases" +
-			"\n" + nationalData['cases_time_series'][length-1]['dailyrecovered'] + " recovered" +
-			"\n" + nationalData['cases_time_series'][length-1]['dailydeceased'] + " deaths");
-			break;
-
-		case 'state':
-			var state = args[0].toUpperCase();
-			if (validStates.includes(state)) {
-				for (var i = 0; i < nationalData['statewise'].length; i++) {
-					if (nationalData['statewise'][i]['statecode'] === state) {
-						message.channel.send(nationalData['statewise'][i]['state'] + ", India:\n" +
-						nationalData['statewise'][i]['confirmed'] + " confirmed cases\n" +
-						nationalData['statewise'][i]['active'] + " active cases\n" +
-						nationalData['statewise'][i]['recovered'] + " recovered\n" +
-						nationalData['statewise'][i]['deaths'] + " deaths")
-						break;
-					}
-				}
-			} else {
-				message.channel.send("Not a valid statecode, use !state-list to see a list of statecodes")
-			}
-
-			break;
-
-		case 'state-list':
-			var string = "";
-			for (var i = 0; i < stateList.length; i++) {
-				string = string.concat(stateList[i] +"\n");
-			}
-			message.channel.send(string);
-			break;
-
-		case 'help':
-			message.channel.send("Commands: " +
-			"\n!bot-info: Bot information" +
-			"\n!user-info: User information" +
-			"\n!cases: India's numbers" +
-			"\n!daily: Yesterday's numbers" +
-			"\n!state <statecode>: Statewise numbers" +
-			"\n!state-list: List of states with statecode")
-			break;
-
-		default:
-			message.channel.send("Not a valid command, use !help to see list of commands")
+	try {
+		command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('There was an error trying to execute that command.');
 	}
 });
 
-client.login(auth.token);
+client.login(config.token);
