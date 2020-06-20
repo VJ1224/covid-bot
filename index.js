@@ -38,17 +38,17 @@ client.on('message', async message => {
 		case 'bop': message.channel.send('Beep');
 								break;
 
-		case 'bot': message.channel.send('This is a COVID-19 Information bot that gives information regarding the cases in India. \nCreated by Vansh Jain.')
+		case 'bot-info': message.channel.send('This is a COVID-19 Information bot that gives information regarding the cases in India. \nCreated by Vansh Jain.')
 							  break;
 
 		case 'user-info': message.channel.send('Your username: ' + message.author.username +
 											"\nYour ID: " + message.author.id);
 											break;
 
-		case 'cases': message.channel.send("India has " + nationalData['statewise'][0]['confirmed'] + " confirmed cases" +
-										"\nIndia has " + nationalData['statewise'][0]['active'] + " active cases" +
-										"\nIndia has " + nationalData['statewise'][0]['recovered'] + " recovered" +
-										"\nIndia has " + nationalData['statewise'][0]['deaths'] + " deaths");
+		case 'cases': message.channel.send("India:\n" + nationalData['statewise'][0]['confirmed'] + " confirmed cases\n" +
+										nationalData['statewise'][0]['active'] + " active cases\n" +
+										nationalData['statewise'][0]['recovered'] + " recovered\n" +
+										nationalData['statewise'][0]['deaths'] + " deaths");
 									break;
 
 		case 'daily': var length = nationalData['cases_time_series'].length
@@ -63,10 +63,11 @@ client.on('message', async message => {
 									if (validStates.includes(state)) {
 										for (var i = 0; i < nationalData['statewise'].length; i++) {
 											if (nationalData['statewise'][i]['statecode'] === state) {
-												message.channel.send(nationalData['statewise'][i]['state'] + " has " + nationalData['statewise'][i]['confirmed'] + " confirmed cases" +
-													"\n" + nationalData['statewise'][i]['state'] + " has " + nationalData['statewise'][i]['active'] + " active cases" +
-													"\n" + nationalData['statewise'][i]['state'] + " has " + nationalData['statewise'][i]['recovered'] + " recovered" +
-													"\n" + nationalData['statewise'][i]['state'] + " has " + nationalData['statewise'][i]['deaths'] + " deaths")
+												message.channel.send(nationalData['statewise'][i]['state'] + ", India:\n" +
+													nationalData['statewise'][i]['confirmed'] + " confirmed cases\n" +
+													nationalData['statewise'][i]['active'] + " active cases\n" +
+													nationalData['statewise'][i]['recovered'] + " recovered\n" +
+													nationalData['statewise'][i]['deaths'] + " deaths")
 												break;
 											}
 										}
@@ -84,11 +85,12 @@ client.on('message', async message => {
 												break;
 
 		case 'help':	message.channel.send("Commands: " +
-										"\n\t!bot: Bot information" +
-								 		"\n\t!cases: India's numbers" +
-										"\n\t!daily: Yesterday's numbers" +
-										"\n\t!state <statecode>: Statewise numbers" +
-										"\n\t!state-list: List of states with statecode")
+										"\n!bot-info: Bot information" +
+										"\n!user-info: User information" +
+								 		"\n!cases: India's numbers" +
+										"\n!daily: Yesterday's numbers" +
+										"\n!state <statecode>: Statewise numbers" +
+										"\n!state-list: List of states with statecode")
 									break;
 
 		default: message.channel.send("Not a valid command, use !help to see list of commands")
