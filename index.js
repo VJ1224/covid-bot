@@ -18,14 +18,14 @@ client.once('ready', () => {
 client.on('message', async message => {
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
-	const args = message.content.slice(process.env.PREFIX).split(' ');
+	const args = message.content.slice(process.env.PREFIX.length).split(' ');
 	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) {
-		message.reply('Not a valid command, use !help to see a list of valid commands.')
+		message.reply('Not a valid command, use ' + process.env.PREFIX + 'help to see a list of valid commands.')
 		return;
 	}
 
