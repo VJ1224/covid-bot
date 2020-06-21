@@ -16,6 +16,10 @@ client.once('ready', () => {
 });
 
 client.on('message', async message => {
+	if (message.mentions.has(client.user)) {
+		client.commands.get('bot-info').execute(message,[]);
+		return;
+	}
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
 	const args = message.content.slice(process.env.PREFIX.length).split(' ');
