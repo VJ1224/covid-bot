@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const Discord = require('discord.js');
 
 module.exports = {
 	name: 'state',
@@ -17,11 +18,18 @@ module.exports = {
     if (stateCodes.includes(state)) {
       for (var i = 0; i < nationalData['statewise'].length; i++) {
         if (nationalData['statewise'][i]['statecode'] === state) {
-          message.channel.send("**" + nationalData['statewise'][i]['state'] + ", India:**" +
-          "\n**Confirmed:** " + nationalData['statewise'][i]['confirmed'] +
-          "\n**Active:** " + nationalData['statewise'][i]['active'] +
-          "\n**Recovered:** " + nationalData['statewise'][i]['recovered'] +
-          "\n**Dead:** " + nationalData['statewise'][i]['deaths'])
+					const casesEmbed = new Discord.MessageEmbed()
+					.setColor('#f38181')
+					.setTitle('COVID-19 Cases in ' + nationalData['statewise'][i]['state'] + ', India')
+					.addFields(
+						{ name: 'Confirmed', value: nationalData['statewise'][i]['confirmed'], inline: true },
+						{ name: 'Active', value: nationalData['statewise'][i]['active'], inline: true },
+						{ name: 'Recovered', value: nationalData['statewise'][i]['recovered'], inline: true },
+						{ name: 'Deaths', value: nationalData['statewise'][i]['deaths'], inline: true },
+					)
+					.setTimestamp();
+
+					message.channel.send(casesEmbed)
           break;
         }
       }

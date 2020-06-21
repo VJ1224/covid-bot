@@ -10,7 +10,7 @@ module.exports = {
     const { commands } = message.client;
 
     if (!args.length) {
-      data.push("Here's a list of all my commands:");
+      data.push("**Here's a list of all my commands:**\n");
       data.push(commands.map(command => command.name).join(', '));
       data.push("\nUse " + config.prefix + "help [command name] to get info on a specific command.");
 

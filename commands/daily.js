@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const Discord = require('discord.js');
 
 module.exports = {
 	name: 'daily',
@@ -6,10 +7,19 @@ module.exports = {
 	usage: ' ',
 	async execute(message, args) {
     const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());
-    var length = nationalData['cases_time_series'].length
-    message.channel.send("**India, " + nationalData['cases_time_series'][length - 1]['date'] + ":**" +
-    "\n**Confirmed:** " + nationalData['cases_time_series'][length - 1]['dailyconfirmed'] +
-    "\n**Recovered:** " + nationalData['cases_time_series'][length - 1]['dailyrecovered'] +
-    "\n**Dead:** " + nationalData['cases_time_series'][length - 1]['dailydeceased']);
-	},
+
+		var length = nationalData['cases_time_series'].length
+
+		const casesEmbed = new Discord.MessageEmbed()
+		.setColor('#f38181')
+		.setTitle('COVID-19 Cases in India on ' + nationalData['cases_time_series'][length - 1]['date'])
+		.addFields(
+			{ name: 'Confirmed', value: nationalData['cases_time_series'][length - 1]['dailyconfirmed'], inline: true },
+			{ name: 'Recovered', value: nationalData['cases_time_series'][length - 1]['dailyrecovered'], inline: true },
+			{ name: 'Deaths', value: nationalData['cases_time_series'][length - 1]['dailydeceased'], inline: true },
+		)
+		.setTimestamp();
+
+		message.channel.send(casesEmbed)
+  },
 };

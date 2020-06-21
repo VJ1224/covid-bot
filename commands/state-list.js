@@ -6,10 +6,16 @@ module.exports = {
 	usage: ' ',
 	async execute(message, args) {
     const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());
-    var states = ""
-    for (var i = 0; i < nationalData['statewise'].length; i++) {
+    var states = "**Here's a list of statecodes: **\n"
+		
+		for (var i = 0; i < nationalData['statewise'].length; i++) {
       states = states.concat("\n" + nationalData['statewise'][i]['statecode'] + ": " + nationalData['statewise'][i]['state'])
     }
-    message.channel.send(states);
+
+    message.author.send(states)
+		.then(() => {
+			if (message.channel.type === 'dm') return;
+			message.reply("A DM has been sent to you with a list of statecodes.");
+		})
 	},
 };
