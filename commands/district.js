@@ -5,7 +5,7 @@ require('dotenv').config()
 module.exports = {
 	name: 'district',
 	description: "Districtwise COVID-19 number's in India.",
-  usage: '<statecode> <districtname>',
+  usage: '[statecode] [districtname]',
   args: true,
 	async execute(message, args) {
     const stateCode = args[0].toUpperCase();
@@ -41,7 +41,7 @@ module.exports = {
     }
 
     if (!found) {
-      message.channel.send("Not a valid district, use " + process.env.PREFIX + "district-list <statecode> to see a list of districts");
+      message.channel.send("Not a valid district, use " + process.env.PREFIX + "district-list [statecode] to see a list of districts");
       return;
     }
 

@@ -5,7 +5,7 @@ require('dotenv').config()
 module.exports = {
 	name: 'state',
 	description: "Statewise COVID-19 number's in India.",
-  usage: '<statecode>',
+  usage: '[statecode]',
   args: true,
 	async execute(message, args) {
     const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());

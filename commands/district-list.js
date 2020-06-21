@@ -4,7 +4,7 @@ require('dotenv').config()
 module.exports = {
 	name: 'district-list',
 	description: "List of valid districts and statecodes in India.",
-	usage: '<statecode>',
+	usage: '[statecode]',
   args: true,
 	async execute(message, args) {
     const stateCode = args[0].toUpperCase();
