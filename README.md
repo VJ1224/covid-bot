@@ -16,6 +16,8 @@ To add the bot to your server, [click here](https://discordapp.com/oauth2/author
 
 * Fetch: npm install node-fetch
 
+* Dotenv: npm install dotenv
+
 ## Credits
 
 Uses the data collected by the team at:
