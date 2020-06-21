@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
+require('dotenv').config()
 
 module.exports = {
 	name: 'state',
@@ -10,31 +11,33 @@ module.exports = {
     const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());
     var stateCodes = []
     var state = args[0].toUpperCase();
+		var index = 0;
+		var found = false;
 
     for (var i = 0; i < nationalData['statewise'].length; i++) {
-      stateCodes[i] = nationalData['statewise'][i]['statecode']
-    }
-
-    if (stateCodes.includes(state)) {
-      for (var i = 0; i < nationalData['statewise'].length; i++) {
-        if (nationalData['statewise'][i]['statecode'] === state) {
-					const casesEmbed = new Discord.MessageEmbed()
-					.setColor('#f38181')
-					.setTitle('COVID-19 Cases in ' + nationalData['statewise'][i]['state'] + ', India')
-					.addFields(
-						{ name: 'Confirmed', value: nationalData['statewise'][i]['confirmed'], inline: true },
-						{ name: 'Active', value: nationalData['statewise'][i]['active'], inline: true },
-						{ name: 'Recovered', value: nationalData['statewise'][i]['recovered'], inline: true },
-						{ name: 'Deaths', value: nationalData['statewise'][i]['deaths'], inline: true },
-					)
-					.setTimestamp();
-
-					message.channel.send(casesEmbed)
-          break;
-        }
+      if (nationalData['statewise'][i]['statecode'] === state) {
+				index = i;
+				found = true;
+				break;
       }
-    } else {
-      message.channel.send("Not a valid statecode, use !state-list to see a list of statecodes")
     }
+
+		if (!found) {
+      message.channel.send("Not a valid statecode, use " + process.env.PREFIX + "state-list to see a list of statecodes")
+      return;
+    }
+
+		const casesEmbed = new Discord.MessageEmbed()
+		.setColor('#f38181')
+		.setTitle('COVID-19 Cases in ' + nationalData['statewise'][index]['state'] + ', India')
+		.addFields(
+			{ name: 'Confirmed', value: nationalData['statewise'][index]['confirmed'], inline: true },
+			{ name: 'Active', value: nationalData['statewise'][index]['active'], inline: true },
+			{ name: 'Recovered', value: nationalData['statewise'][index]['recovered'], inline: true },
+			{ name: 'Deaths', value: nationalData['statewise'][index]['deaths'], inline: true },
+		)
+		.setTimestamp();
+
+		message.channel.send(casesEmbed);
 	},
 };
