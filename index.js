@@ -16,9 +16,9 @@ client.once('ready', () => {
 });
 
 client.on('message', async message => {
-	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
-	const args = message.content.slice(config.prefix.length).split(' ');
+	const args = message.content.slice(process.env.PREFIX).split(' ');
 	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName)
@@ -33,7 +33,7 @@ client.on('message', async message => {
 		let reply = "You didn't provide any arguments, " + message.author.username + ".";
 
 		if (command.usage) {
-			reply += "\nThe proper usage would be: "+ config.prefix + command.name + " " + command.usage;
+			reply += "\nThe proper usage would be: "+ process.env.PREFIX + command.name + " " + command.usage;
 		}
 
 		return message.channel.send(reply);
@@ -47,4 +47,4 @@ client.on('message', async message => {
 	}
 });
 
-client.login(config.token);
+client.login(process.env.TOKEN);
