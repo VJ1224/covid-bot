@@ -1,4 +1,4 @@
-const config = require('../config.json');
+require('dotenv').config()
 
 module.exports = {
 	name: 'help',
@@ -12,7 +12,7 @@ module.exports = {
     if (!args.length) {
       data.push("**Here's a list of all my commands:**\n");
       data.push(commands.map(command => command.name).join(', '));
-      data.push("\nUse " + config.prefix + "help [command name] to get info on a specific command.");
+      data.push("\nUse " + process.env.PREFIX + "help [command name] to get info on a specific command.");
 
       return message.author.send(data, { split: true })
       	.then(() => {
@@ -37,7 +37,7 @@ module.exports = {
 
     if (command.aliases) data.push("**Aliases:** " + command.aliases.join(', '));
     if (command.description) data.push("**Description:** " + command.description);
-    if (command.usage) data.push("**Usage:** " + config.prefix + command.name + " " + command.usage);
+    if (command.usage) data.push("**Usage:** " + process.env.PREFIX + command.name + " " + command.usage);
 
     message.channel.send(data, { split: true });
 	},
