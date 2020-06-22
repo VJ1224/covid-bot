@@ -11,7 +11,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-client.once('ready', () => {
+client.on('ready', () => {
 	console.log('Connected');
 	client.user.setPresence({ activity: { name: 'Developing a vaccine' }, status: 'online' })
 });
