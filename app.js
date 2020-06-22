@@ -13,6 +13,8 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Connected');
+	client.user.setPresence({ activity: { name: 'Developing a Vaccine', type: 'CUSTOM_STATUS' }, status: 'online' })
+	.then(console.log)
 });
 
 client.on('message', async message => {
