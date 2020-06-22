@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-require('dotenv').config()
+require('dotenv').config();
 const fs = require('fs');
 client.commands = new Discord.Collection();
 
@@ -13,8 +13,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Connected');
-	client.user.setStatus('online')
-	client.user.setActivity('Developing a vaccine', { type: 'CUSTOM_STATUS' })
+	client.user.setPresence({ activity: { name: 'Developing a vaccine' }, status: 'online' })
 });
 
 client.on('message', async message => {
