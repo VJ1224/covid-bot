@@ -19,8 +19,8 @@ client.on('ready', () => {
 client.on('message', async message => {
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
-		return;
 	}
+
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
 	const args = message.content.slice(process.env.PREFIX.length).split(' ');
@@ -38,7 +38,7 @@ client.on('message', async message => {
 		let reply = "You didn't provide any arguments, " + message.author.username + ".";
 
 		if (command.usage) {
-			reply += "\nThe proper usage would be: "+ process.env.PREFIX + command.name + " " + command.usage;
+			reply += "\nThe proper usage would be: " + process.env.PREFIX + command.name + " " + command.usage;
 		}
 
 		return message.channel.send(reply);
