@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'user-info',
 	description: 'User Information',
-	usage: ' ',
+	usage: '@user<optional>',
 	execute(message, args) {
 
 		if (message.mentions.users.size == 0) {
