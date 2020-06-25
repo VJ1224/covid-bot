@@ -16,6 +16,11 @@ client.on('ready', () => {
 	client.user.setPresence({ activity: { name: 'Plague Inc.'}, status: 'online' })
 });
 
+client.on('guildCreate', guild => {
+	if (guild.available)
+		console.log('Added to: ' + guild.name);
+});
+
 client.on('message', async message => {
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
