@@ -1,4 +1,4 @@
-# COVID-19 Discord Bot
+# COVID-19 India Discord Bot
 
 A Discord bot that gives updates regarding the COVID-19 cases in India
 
