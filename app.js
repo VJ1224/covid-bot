@@ -14,7 +14,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
 	console.log('Connected');
 	console.log('Servers connected to:');
-	const guildNames = client.guilds.map(guild => guild.name).join("\n");
+	const guildNames = client.guilds.cache.map(guild => guild.name).join("\n");
 	console.log(guildNames);
 	client.user.setPresence({ activity: { name: 'Plague Inc.'}, status: 'online' })
 });
