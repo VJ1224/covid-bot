@@ -13,12 +13,20 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
 	console.log('Connected');
+	console.log('Servers connected to:');
+	const guildNames = client.guilds.map(guild => guild.name).join("\n");
+	console.log(guildNames);
 	client.user.setPresence({ activity: { name: 'Plague Inc.'}, status: 'online' })
 });
 
 client.on('guildCreate', guild => {
 	if (guild.available)
 		console.log('Added to: ' + guild.name);
+});
+
+client.on('guildDelete', guild => {
+	if (guild.available)
+		console.log('Removed from: ' + guild.name);
 });
 
 client.on('message', async message => {
