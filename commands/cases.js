@@ -7,7 +7,9 @@ module.exports = {
 	usage: ' ',
 	async execute(message, args) {
 
-    const nationalData = await fetch('https://api.covid19india.org/data.json').then(response => response.json());
+    const nationalData = await fetch('https://api.covid19india.org/data.json')
+			.then(response => response.json());
+			.catch(error => console.log(error));
 
 		const casesEmbed = new Discord.MessageEmbed()
 		.setTitle('COVID-19 Cases in India')

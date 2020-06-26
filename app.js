@@ -29,7 +29,7 @@ client.on('guildDelete', guild => {
 		console.log('Removed from: ' + guild.name);
 });
 
-client.on('message', async message => {
+client.on('message', message => {
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
 	}

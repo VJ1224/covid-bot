@@ -12,7 +12,7 @@ module.exports = {
 		'Use ' + process.env.PREFIX + 'help for a list of commands.'
 		)
 		.setFooter('Author: Vansh Jain')
-		.setURL('https://github.com/VJ1224')
+		.setURL('https://github.com/VJ1224/covid-bot')
 
 		message.channel.send(infoEmbed)
 	},
