@@ -48,10 +48,10 @@ client.on('message', async message => {
 	}
 
 	if (command.args && !args.length) {
-		let reply = "You didn't provide any arguments, " + message.author.username + ".";
+		let reply = "No arguments provided.";
 
 		if (command.usage) {
-			reply += "\nThe proper usage would be: " + process.env.PREFIX + command.name + " " + command.usage;
+			reply += "\nUsage: " + process.env.PREFIX + command.name + " " + command.usage;
 		}
 
 		return message.channel.send(reply);

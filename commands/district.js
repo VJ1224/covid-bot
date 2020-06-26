@@ -46,7 +46,6 @@ module.exports = {
     }
 
     const casesEmbed = new Discord.MessageEmbed()
-		.setColor('#f38181')
 		.setTitle('COVID-19 Cases in ' + district + ", " +  state + ', India')
 		.addFields(
 			{ name: 'Confirmed', value: stateData[state]["districtData"][district]['confirmed'], inline: true },
@@ -54,7 +53,6 @@ module.exports = {
 			{ name: 'Recovered', value: stateData[state]["districtData"][district]['recovered'], inline: true },
 			{ name: 'Deaths', value: stateData[state]["districtData"][district]['deceased'], inline: true },
 		)
-		.setTimestamp();
 
 		message.channel.send(casesEmbed)
 	},

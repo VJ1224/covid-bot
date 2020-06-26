@@ -11,14 +11,12 @@ module.exports = {
 		var length = nationalData['cases_time_series'].length
 
 		const casesEmbed = new Discord.MessageEmbed()
-		.setColor('#f38181')
 		.setTitle('COVID-19 Cases in India on ' + nationalData['cases_time_series'][length - 1]['date'])
 		.addFields(
 			{ name: 'Confirmed', value: nationalData['cases_time_series'][length - 1]['dailyconfirmed'], inline: true },
 			{ name: 'Recovered', value: nationalData['cases_time_series'][length - 1]['dailyrecovered'], inline: true },
 			{ name: 'Deaths', value: nationalData['cases_time_series'][length - 1]['dailydeceased'], inline: true },
 		)
-		.setTimestamp();
 
 		message.channel.send(casesEmbed)
   },

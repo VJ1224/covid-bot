@@ -7,7 +7,6 @@ module.exports = {
 	usage: ' ',
 	execute(message, args) {
 		const infoEmbed = new Discord.MessageEmbed()
-		.setColor('#f38181')
 		.setTitle('COVID-19 India Bot')
 		.setAuthor('Vansh Jain', '', 'https://github.com/VJ1224')
 		.setDescription('This is a COVID-19 Information bot that gives information regarding the cases in India.\n\n' +
