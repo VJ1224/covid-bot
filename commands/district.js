@@ -10,10 +10,10 @@ module.exports = {
 	async execute(message, args) {
     const stateCode = args[0].toUpperCase();
     const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
-			.then(response => response.json());
+			.then(response => response.json())
 			.catch(error => console.log(error));
     const nationalData = await fetch('https://api.covid19india.org/data.json')
-			.then(response => response.json());
+			.then(response => response.json())
 			.catch(error => console.log(error));
     var state;
     var found = false;
