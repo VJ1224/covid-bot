@@ -33,6 +33,9 @@ client.on('message', message => {
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
 	}
+	
+	message.content = message.content.replace(/<@!?(\d+)>/g,'');
+	message.content = message.content.trim();
 
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
