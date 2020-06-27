@@ -1,5 +1,6 @@
 module.exports = function() {
   this.toIndianFormat = function(number) {
+    number = number.toString();
     var lastThree = number.substring(number.length-3);
     var otherNumbers = number.substring(0,number.length-3);
     if(otherNumbers != '')
