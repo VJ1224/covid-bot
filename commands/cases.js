@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
+const tools = require('../tools.js')();
 
 module.exports = {
 	name: 'cases',
@@ -9,16 +10,16 @@ module.exports = {
 
     const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
 
 		const casesEmbed = new Discord.MessageEmbed()
 		.setTitle('COVID-19 Cases in India')
 		.addFields(
-			{ name: 'Confirmed', value: nationalData['statewise'][0]['confirmed'], inline: true },
-			{ name: 'Active', value: nationalData['statewise'][0]['active'], inline: true },
-			{ name: 'Recovered', value: nationalData['statewise'][0]['recovered'], inline: true },
-			{ name: 'Deaths', value: nationalData['statewise'][0]['deaths'], inline: true },
-			{name: 'Last Updated On:', value:nationalData['statewise'][0]['lastupdatedtime']}
+			{ name: 'Confirmed', value: toIndianFormat(nationalData['statewise'][0]['confirmed']), inline: true },
+			{ name: 'Active', value: toIndianFormat(nationalData['statewise'][0]['active']), inline: true },
+			{ name: 'Recovered', value: toIndianFormat(nationalData['statewise'][0]['recovered']), inline: true },
+			{ name: 'Deaths', value: toIndianFormat(nationalData['statewise'][0]['deaths']), inline: true },
+			{ name: 'Last Updated On:', value: nationalData['statewise'][0]['lastupdatedtime']}
 		)
 
 		message.channel.send(casesEmbed)

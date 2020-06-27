@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args) {
     const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
     var states = "**Here's a list of statecodes: **\n"
 
 		for (var i = 0; i < nationalData['statewise'].length; i++) {

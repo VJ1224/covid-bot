@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
+const tools = require('../tools.js')();
 
 module.exports = {
 	name: 'tests',
@@ -9,16 +10,16 @@ module.exports = {
 
     const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
     var length = nationalData['tested'].length - 1;
 
 		const casesEmbed = new Discord.MessageEmbed()
 		.setTitle('COVID-19 Tests in India')
 		.addFields(
-			{ name: 'Total', value: nationalData['tested'][length]['totalsamplestested'], inline: true },
-			{ name: 'Tests Per Million', value: nationalData['tested'][length]['testspermillion'], inline: true },
-			{ name: 'Tests Today', value: nationalData['tested'][length]['samplereportedtoday'], inline: true },
-			{name: 'Last Updated On:', value:nationalData['tested'][length]['updatetimestamp']}
+			{ name: 'Total', value: toIndianFormat(nationalData['tested'][length]['totalsamplestested']), inline: true },
+			{ name: 'Tests Per Million', value: toIndianFormat(nationalData['tested'][length]['testspermillion']), inline: true },
+			{ name: 'Tests Today', value: toIndianFormat(nationalData['tested'][length]['samplereportedtoday']), inline: true },
+			{ name: 'Last Updated On:', value: nationalData['tested'][length]['updatetimestamp']}
 		)
 
 		message.channel.send(casesEmbed)

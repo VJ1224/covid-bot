@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
+const tools = require('../tools.js')();
 require('dotenv').config()
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
 	async execute(message, args) {
     const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
-			.catch(error => console.log(error));
+			.catch(error => console.error(error));
     var stateCodes = []
     var state = args[0].toUpperCase();
 		var index = 0;
@@ -32,11 +33,11 @@ module.exports = {
 		const casesEmbed = new Discord.MessageEmbed()
 		.setTitle('COVID-19 Cases in ' + nationalData['statewise'][index]['state'] + ', India')
 		.addFields(
-			{ name: 'Confirmed', value: nationalData['statewise'][index]['confirmed'], inline: true },
-			{ name: 'Active', value: nationalData['statewise'][index]['active'], inline: true },
-			{ name: 'Recovered', value: nationalData['statewise'][index]['recovered'], inline: true },
-			{ name: 'Deaths', value: nationalData['statewise'][index]['deaths'], inline: true },
-			{name: 'Last Updated On:', value:nationalData['statewise'][index]['lastupdatedtime']}
+			{ name: 'Confirmed', value: toIndianFormat(nationalData['statewise'][index]['confirmed']), inline: true },
+			{ name: 'Active', value: toIndianFormat(nationalData['statewise'][index]['active']), inline: true },
+			{ name: 'Recovered', value: toIndianFormat(nationalData['statewise'][index]['recovered']), inline: true },
+			{ name: 'Deaths', value: toIndianFormat(nationalData['statewise'][index]['deaths']), inline: true },
+			{ name: 'Last Updated On:', value: nationalData['statewise'][index]['lastupdatedtime']}
 		)
 
 		message.channel.send(casesEmbed);
