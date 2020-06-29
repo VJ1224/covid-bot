@@ -4,6 +4,7 @@ const tools = require('../tools.js')();
 
 module.exports = {
 	name: 'daily',
+	aliases: ['change','delta'],
 	description: "India's COVID-19 numbers yesterday.",
 	usage: ' ',
 	async execute(message, args) {
