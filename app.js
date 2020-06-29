@@ -31,6 +31,8 @@ client.on('guildDelete', guild => {
 });
 
 client.on('message', message => {
+	if (message.author.bot) return;
+
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
 	}
@@ -38,7 +40,7 @@ client.on('message', message => {
 	message.content = message.content.replace(/<@!?(\d+)>/g,'');
 	message.content = message.content.trim();
 
-	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
+	if (!message.content.startsWith(process.env.PREFIX)) return;
 
 	const args = message.content.slice(process.env.PREFIX.length).split(' ');
 	const commandName = args.shift().toLowerCase();
