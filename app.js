@@ -14,26 +14,27 @@ for (const file of commandFiles) {
 client.on('ready', () => {
 	console.log('Connected');
 	console.log('Servers connected to:');
-	const guildNames = client.guilds.cache.map(guild => guild.name).join("\n");
+	const guildNames = client.guilds.cache.map(guild => guild.name + ": " + guild.id).join("\n");
 	console.log(guildNames);
 	client.user.setPresence({ activity: { name: 'Plague Inc.'}, status: 'online' })
 });
 
 client.on('guildCreate', guild => {
-	if (guild.available)
-		console.log('Added to: ' + guild.name);
+	if (guild.available) {
+		console.log('Added to: ' + guild.name + ": " + guild.id);
+	}
 });
 
 client.on('guildDelete', guild => {
 	if (guild.available)
-		console.log('Removed from: ' + guild.name);
+		console.log('Removed from: ' + guild.name + ": " + guild.id);
 });
 
 client.on('message', message => {
 	if (message.mentions.has(client.user)) {
 		client.commands.get('bot-info').execute(message,[]);
 	}
-	
+
 	message.content = message.content.replace(/<@!?(\d+)>/g,'');
 	message.content = message.content.trim();
 
