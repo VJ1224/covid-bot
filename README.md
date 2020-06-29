@@ -6,8 +6,6 @@ A Discord bot that gives updates regarding the COVID-19 cases in India
 
 To add the bot to your server, [click here](https://discordapp.com/oauth2/authorize?&client_id=723409740083757166&scope=bot&permissions=8)
 
-
-
 ## Requirements
 
 * Node.js: Install node
@@ -20,10 +18,10 @@ To add the bot to your server, [click here](https://discordapp.com/oauth2/author
 
 ## Credits
 
-Uses the data collected by the team at:
+COVID19 India Data:
 
    https://api.covid19india.org/
 
-Their GitHub page:
+Medical Data:
 
-   https://github.com/covid19india/api
+   https://developer.infermedica.com/
