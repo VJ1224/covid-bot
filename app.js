@@ -16,7 +16,7 @@ client.on('ready', () => {
 	console.log('Servers connected to:');
 	const guildNames = client.guilds.cache.map(guild => guild.name + ": " + guild.id).join("\n");
 	console.log(guildNames);
-	client.user.setPresence({ activity: { name: 'Plague Inc.'}, status: 'online' })
+	client.user.setPresence({ activity: { name: 'Plague Inc. | ' + process.env.PREFIX + 'help'}, status: 'online' })
 });
 
 client.on('guildCreate', guild => {

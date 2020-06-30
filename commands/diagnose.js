@@ -1,103 +1,61 @@
-const fetch = require('node-fetch');
 const Discord = require('discord.js');
 require('dotenv').config();
+let data = require('../diagnosis.json');
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-async function startDiagnosis(message, data, answers) {
+async function startDiagnosis(message, answers) {
 	const filter = (reaction) => {
 		return ['👍', '👎'].includes(reaction.emoji.name);
 	};
-	message.channel.send('Please select the statements that apply to you.');
-	message.channel.send('React with 👍 or 👎.');
 
-	data.question.items.reduce(async (promise,item)=> {
-	await promise;
-	message.channel.send(item.name)
-	.then(message => {
-		message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-		.then(collected => {
-			const reaction = collected.first();
-			if (reaction.emoji.name === '👍') {
-				answers.push('yes');
-			} else if (reaction.emoji.name === '👎') {
-				answers.push('no');
-			}
-		})
-		.catch(error => console.error(error));
-		})
-	}, undefined)
+	data.reduce(async (promise,item)=> {
+		const p = await promise;
+		message.author.send(item.name)
+		.then(message => {
+			message.awaitReactions(filter, { max: 1, time: 300000, errors: ['time'] })
+			.then(collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '👍') {
+					answers.push(parseInt(item.score));
+				} else {
+					answers.push(0);
+				}
+			})
+			.catch(error => {console.error(error); answers.push(-1);});
+			})
+	}, Promise.resolve());
 }
-
 
 module.exports = {
 	name: 'diagnose',
-	description: "COVID-19 symptoms.",
+	description: "COVID-19 diagnosis tool.",
 	usage: ' ',
 	async execute(message, args) {
-    var age, sex;
-    var id = message.author.id;
-    message.author.send('Beginning diagnosis tool for COVID19...')
-      .then(async message => {
-				message.channel.send('Choose sex.')
-        	.then(async message => {
-						message.react('♂️')
-						.then(message.react('♀️'))
-						const filter = (reaction) => {
-							return ['♂️', '♀️'].includes(reaction.emoji.name);
-						};
+		if (message.channel.type !== 'dm') message.reply('A DM has been sent to you for diagnosis.');
+		let answers = [];
+    message.author.send('**Beginning diagnosis tool for COVID-19**');
+		await sleep(1000);
+		message.author.send("Please select the statements that apply to you. React with 👍 or 👎.");
+		await sleep(1000);
+		const response = await startDiagnosis(message,answers);
+		let i = 0
+		while(answers.length != data.length) {
+			await sleep(1000);
+		}
+		const score = answers.reduce((sum, a) => sum + a,0);
+		const embed = new Discord.MessageEmbed()
+		.setTitle('COVID-19 Diagnosis Results')
 
-						message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-              .then (async collected => {
-                const reaction = collected.first();
-                if (reaction.emoji.name === '♂️')
-                  sex = 'male';
-                else if (reaction.emoji.name === '♀️')
-                  sex = 'female';
-
-								await sleep(1000);
-                message.channel.send('How old are you?')
-                  .then(async () => {
-                    const filter = response => {
-                      return true;
-                    };
-
-                    message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
-                		.then(async collected => {
-											if (!isNaN(collected.first().content)) {
-												answers = []
-                		    age = parseInt(collected.first().content);	const url = "https://api.infermedica.com/covid19/diagnosis";
-													const options = {
-														method: 'POST',
-														headers: {
-															'App-Id': process.env.INFERMEDICA_ID,
-															'App-Key': process.env.INFERMEDICA_KEY,
-															'Content-Type': 'application/json'
-														},
-														body: JSON.stringify({
-															age: age,
-															sex: sex,
-															evidence: answers
-														}),
-													}
-													const data = await fetch(url,options)
-														.then(response => response.json())
-														.catch(error => console.error(error));
-													var cont = await startDiagnosis(message, data, answers);
-													console.log(answers);
-													console.log(cont);
-											} else {
-												message.channel.send('Not a number. Please restart.');
-											}
-                		})
-									.catch(error => console.error(error));
-                	})
-								.catch(error => console.error(error));
-              })
-						.catch(error => console.error(error));
-				})
-			.catch(error => console.error(error));
-			})
-		.catch(error => console.error(error));
+		if (score > 15)
+			embed.setDescription('You likely have COVID-19. Call an emergency number or a medical professional to get further assistance.')
+		else if (score > 10)
+			embed.setDescription('You may have COVID-19. Get yourself tested and contact a medical professional for further assistance.')
+		else if (score > 5)
+			embed.setDescription('Few symptoms may be linked to COVID-19, continue to monitor them and take precautions. Consult a medical professional for further assistance.')
+		else
+			embed.setDescription('Low risk of COVID-19, continue to stay safe and take preventive measures.')
+		if (score >= 0) message.author.send(embed);
+		message.author.send('**Exiting diagnosis tool for COVID-19**');
 	}
 }
