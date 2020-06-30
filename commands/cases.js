@@ -4,7 +4,7 @@ const tools = require('../tools.js')();
 
 module.exports = {
 	name: 'cases',
-	aliases: ['total','india'],
+	aliases: ['total'],
 	description: "India's COVID-19 numbers.",
 	usage: ' ',
 	async execute(message, args) {

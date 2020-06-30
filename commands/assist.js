@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = {
 	name: 'assist',
+	aliases: ['emergency'],
 	description: "COVID-19 help and resources.",
 	usage: ' ',
 	async execute(message, args) {
