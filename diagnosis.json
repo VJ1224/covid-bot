@@ -1,0 +1,51 @@
+
+[
+  {
+    "name":"Do you have fever? ",
+    "score":"2"
+  },
+  {
+    "name":"Are you coughing?",
+    "score":"1"
+  },
+  {
+    "name":"Are you finding it difficult to breathe?",
+    "score":"3"
+  },
+  {
+    "name":"Do you have any nose congestion or a runny nose?",
+    "score":"1"
+  },
+  {
+    "name":"Do you feel tired or dizzy?",
+    "score":"1"
+  },
+  {
+    "name":"Are you experiencing headaches or chestpain?",
+    "score":"1"
+  },
+  {
+    "name":"Do you have bodyache or muscle pain?",
+    "score":"1"
+  },
+  {
+    "name":"Are you experiencing nausea or diarrhea?",
+    "score":"1"
+  },
+  {
+    "name":"Do you have an impaired sense of smell or taste?",
+    "score":"1"
+  },
+  {
+    "name":"Are your symptoms progressively worsening?",
+    "score":"3"
+  },
+  {
+    "name":"Do you have any history of diabetes or heart problems?",
+    "score":"2"
+  },
+  {
+    "name":"Have you been in contact with anyone who has been diagnosed with COVID-19?",
+    "score":"3"
+  }
+]
