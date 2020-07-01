@@ -29,12 +29,12 @@ async function startDiagnosis(message, answers) {
 
 module.exports = {
 	name: 'diagnose',
-	description: "COVID-19 diagnosis tool.",
+	description: "COVID-19 diagnostic tool.",
 	usage: ' ',
 	async execute(message, args) {
 		if (message.channel.type !== 'dm') message.reply('A DM has been sent to you for diagnosis.');
 		let answers = [];
-    message.author.send('**Beginning diagnosis tool for COVID-19**');
+    message.author.send('**Beginning diagnostic tool for COVID-19**');
 		await sleep(1000);
 		message.author.send("Please select the statements that apply to you. React with 👍 or 👎.");
 		await sleep(1000);
@@ -56,6 +56,6 @@ module.exports = {
 		else
 			embed.setDescription('Low risk of COVID-19, continue to stay safe and take preventive measures.')
 		if (score >= 0) message.author.send(embed);
-		message.author.send('**Exiting diagnosis tool for COVID-19**');
+		message.author.send('**Exiting diagnostic tool for COVID-19**');
 	}
 }
