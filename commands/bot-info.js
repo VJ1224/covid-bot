@@ -8,7 +8,9 @@ module.exports = {
 	execute(message, args) {
 		const infoEmbed = new Discord.MessageEmbed()
 		.setTitle('COVID-19 India Bot')
-		.setDescription('This is a COVID-19 Information bot that gives information regarding the cases in India.\n\n' +
+		.setDescription('A COVID-19 Information bot that gives updates regarding the cases in India.' +
+		' Also includes a diagnostic tool to check for COVID-19 as well as common symptoms and risk factors.' +
+		' Provides resources to seek further medical help.\n\n' +
 		'Use ' + process.env.PREFIX + 'help for a list of commands.'
 		)
 		.setFooter('Author: Vansh Jain')

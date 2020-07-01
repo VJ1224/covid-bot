@@ -10,7 +10,7 @@ async function startDiagnosis(message, answers) {
 	};
 
 	data.reduce(async (promise,item)=> {
-		const p = await promise;
+		await promise;
 		message.author.send(item.name)
 		.then(message => {
 			message.awaitReactions(filter, { max: 1, time: 300000, errors: ['time'] })
