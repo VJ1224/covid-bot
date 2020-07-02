@@ -22,7 +22,7 @@ async function startDiagnosis(message, answers) {
 					answers.push(0);
 				}
 			})
-			.catch(error => {console.error(error); answers.push(-1);});
+			.catch(error => {answers.push(-1);});
 			})
 	}, Promise.resolve());
 }
@@ -39,7 +39,7 @@ module.exports = {
 		message.author.send("Please select the statements that apply to you. React with 👍 or 👎.");
 		await sleep(1000);
 		const response = await startDiagnosis(message,answers);
-		let i = 0
+		
 		while(answers.length != data.length) {
 			await sleep(1000);
 		}
