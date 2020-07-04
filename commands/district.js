@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const tools = require('../tools.js')();
+const {toIndianFormat} = require('../tools.js');
 require('dotenv').config()
 
 module.exports = {
