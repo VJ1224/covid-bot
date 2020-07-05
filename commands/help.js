@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
 	name: 'help',
@@ -6,39 +6,39 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '[command name]',
 	execute(message, args) {
-    const data = [];
-    const { commands } = message.client;
+		const data = [];
+		const { commands } = message.client;
 
-    if (!args.length) {
-      data.push("**Here's a list of all my commands:**\n");
-      data.push(commands.map(command => command.name).join(', '));
-      data.push("\nUse " + process.env.PREFIX + "help [command name] to get info on a specific command.");
+		if (!args.length) {
+			data.push('**Here\'s a list of all my commands:**\n');
+			data.push(commands.map(command => command.name).join(', '));
+			data.push('\nUse ' + process.env.PREFIX + 'help [command name] to get info on a specific command.');
 
-      return message.author.send(data, { split: true })
-      	.then(() => {
-      		if (message.channel.type === 'dm') return;
-      		message.reply("A DM has been sent to you with a list of commands.");
-      	})
-      	.catch(error => {
-      		console.error("Could not send help DM to " + message.author.tag +"\n", error);
-      		message.reply("Unable to send DM with list of commands.");
-          messag.channel.send(data, {split: true})
-      	});
-    }
+			return message.author.send(data, { split: true })
+				.then(() => {
+					if (message.channel.type === 'dm') return;
+					message.reply('A DM has been sent to you with a list of commands.');
+				})
+				.catch(error => {
+					console.error('Could not send help DM to ' + message.author.tag + '\n', error);
+					message.reply('Unable to send DM with list of commands.');
+					message.channel.send(data, { split: true });
+				});
+		}
 
-    const name = args[0].toLowerCase();
-    const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
+		const name = args[0].toLowerCase();
+		const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
-    if (!command) {
-    	return message.reply("Not a valid command.");
-    }
+		if (!command) {
+			return message.reply('Not a valid command.');
+		}
 
-    data.push("**Name:** "+ command.name);
+		data.push('**Name:** ' + command.name);
 
-    if (command.aliases) data.push("**Aliases:** " + command.aliases.join(', '));
-    if (command.description) data.push("**Description:** " + command.description);
-    if (command.usage) data.push("**Usage:** " + process.env.PREFIX + command.name + " " + command.usage);
+		if (command.aliases) data.push('**Aliases:** ' + command.aliases.join(', '));
+		if (command.description) data.push('**Description:** ' + command.description);
+		if (command.usage) data.push('**Usage:** ' + process.env.PREFIX + command.name + ' ' + command.usage);
 
-    message.channel.send(data, { split: true });
+		message.channel.send(data, { split: true });
 	},
 };
