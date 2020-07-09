@@ -1,43 +1,43 @@
 
 [
   {
-    "name":"Do you have fever? ",
+    "name":"- Fever",
     "score":"2"
   },
   {
-    "name":"Are you coughing?",
+    "name":"- Cough",
     "score":"1"
   },
   {
-    "name":"Are you finding it difficult to breathe?",
+    "name":"- Difficult to breathe",
     "score":"3"
   },
   {
-    "name":"Do you have any nose congestion or a runny nose?",
+    "name":"- Nose congestion or a runny nose",
     "score":"1"
   },
   {
-    "name":"Do you feel tired or dizzy?",
+    "name":"- Feeling tired or dizzy",
     "score":"1"
   },
   {
-    "name":"Are you experiencing headaches or chestpain?",
+    "name":"- Headaches or chestpain",
     "score":"1"
   },
   {
-    "name":"Do you have bodyache or muscle pain?",
+    "name":"- Bodyache or muscle pain",
     "score":"1"
   },
   {
-    "name":"Are you experiencing nausea or diarrhea?",
+    "name":"- Nausea or diarrhea",
     "score":"1"
   },
   {
-    "name":"Do you have an impaired sense of smell or taste?",
+    "name":"- Impaired sense of smell or taste",
     "score":"1"
   },
   {
-    "name":"Are your symptoms progressively worsening?",
+    "name":"Are these symptoms progressively worsening?",
     "score":"3"
   },
   {

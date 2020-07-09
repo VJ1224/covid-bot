@@ -37,7 +37,8 @@ module.exports = {
 		const answers = [];
 		message.author.send('**Beginning diagnostic tool for COVID-19**');
 		await sleep(1000);
-		message.author.send('Please select the statements that apply to you. React with 👍 or 👎.');
+		message.author.send('Please select the statements that apply to you. \nReact with 👍 or 👎.')
+			.then(message.author.send('Do you have any of the following symptoms? \nReact with 👍 or 👎 for each symptom.'));
 		await sleep(1000);
 		await startDiagnosis(message, answers);
 
@@ -49,13 +50,13 @@ module.exports = {
 			.setTitle('COVID-19 Diagnosis Results');
 
 		if (score > 15) {
-			embed.setDescription('You likely have COVID-19. Call an emergency number or a medical professional to get further assistance.');
+			embed.setDescription('High risk of COVID-19. Call an emergency number or a medical professional to get further assistance.');
 		}
 		else if (score > 10) {
-			embed.setDescription('You may have COVID-19. Get yourself tested and contact a medical professional for further assistance.');
+			embed.setDescription('Medium risk of COVID-19. Get yourself tested and contact a medical professional for further assistance.');
 		}
 		else if (score > 5) {
-			embed.setDescription('Few symptoms may be linked to COVID-19, continue to monitor them and take precautions. Consult a medical professional for further assistance.');
+			embed.setDescription('Low risk of COVID-19. Few symptoms may be linked, continue to monitor them and take precautions. Consult a medical professional for further assistance.');
 		}
 		else {
 			embed.setDescription('Low risk of COVID-19, continue to stay safe and take preventive measures.');
