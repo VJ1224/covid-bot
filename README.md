@@ -16,12 +16,29 @@ To add the bot to your server, [click here](https://discordapp.com/oauth2/author
 
 * Dotenv: npm install dotenv
 
+## Files
+
+* app.js: Stores the main bot logic to read messages and execute commands
+
+* commands: Folder that stores each command in a seperate .js file
+   Each .js file exports the execute function as well as relevant information about the command
+
+* tools.js: Additional functions that are common for multiple commands
+
+## Run
+
+Run the bot using Node.js
+
+```node
+node app.js
+```
+
 ## Credits
 
 COVID19 India Data:
 
-   https://api.covid19india.org/
+   <https://api.covid19india.org/>
 
 Medical Data:
 
-   https://developer.infermedica.com/
+   <https://developer.infermedica.com>
