@@ -20,8 +20,7 @@ To add the bot to your server, [click here](https://discordapp.com/oauth2/author
 
 * app.js: Stores the main bot logic to read messages and execute commands.
 
-* commands: Folder that stores each command in a seperate .js file.
-   Each .js file exports the execute function as well as relevant information about the command.
+* commands: Folder that stores each command in a seperate .js file. Each .js file exports the execute function as well as relevant information about the command.
 
 * tools.js: Additional functions that are common for multiple commands.
 

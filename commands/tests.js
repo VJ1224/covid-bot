@@ -19,7 +19,7 @@ module.exports = {
 				{ name: 'Total', value: toIndianFormat(nationalData['tested'][length]['totalsamplestested']), inline: true },
 				{ name: 'Tests Per Million', value: toIndianFormat(nationalData['tested'][length]['testspermillion']), inline: true },
 				{ name: 'Tests Today', value: toIndianFormat(nationalData['tested'][length]['samplereportedtoday']), inline: true },
-				{ name: 'Last Updated On:', value: nationalData['tested'][length]['updatetimestamp'] }
+				{ name: 'Last Updated On:', value: nationalData['tested'][length]['updatetimestamp'] },
 			);
 
 		message.channel.send(casesEmbed);

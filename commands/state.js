@@ -36,7 +36,7 @@ module.exports = {
 				{ name: 'Active', value: toIndianFormat(nationalData['statewise'][index]['active']), inline: true },
 				{ name: 'Recovered', value: toIndianFormat(nationalData['statewise'][index]['recovered']), inline: true },
 				{ name: 'Deaths', value: toIndianFormat(nationalData['statewise'][index]['deaths']), inline: true },
-				{ name: 'Last Updated On:', value: nationalData['statewise'][index]['lastupdatedtime'] }
+				{ name: 'Last Updated On:', value: nationalData['statewise'][index]['lastupdatedtime'] },
 			);
 
 		message.channel.send(casesEmbed);
