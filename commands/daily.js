@@ -4,7 +4,7 @@ const { toIndianFormat } = require('../tools.js');
 
 module.exports = {
 	name: 'daily',
-	description: 'India\'s COVID-19 numbers yesterday.',
+	description: 'India\'s COVID-19 cases yesterday.',
 	usage: ' ',
 	async execute(message, args) { // eslint-disable-line no-unused-vars
 		const nationalData = await fetch('https://api.covid19india.org/data.json')

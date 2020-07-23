@@ -5,7 +5,7 @@ require('dotenv').config();
 
 module.exports = {
 	name: 'district',
-	description: 'Districtwise COVID-19 number\'s in India.',
+	description: 'Districtwise COVID-19 cases in India.',
 	usage: '[statecode] [districtname]',
 	args: true,
 	async execute(message, args) {

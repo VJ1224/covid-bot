@@ -5,7 +5,7 @@ const { toIndianFormat } = require('../tools.js');
 module.exports = {
 	name: 'cases',
 	aliases: ['total'],
-	description: 'India\'s COVID-19 numbers.',
+	description: 'India\'s total COVID-19 cases.',
 	usage: ' ',
 	async execute(message, args) { // eslint-disable-line no-unused-vars
 

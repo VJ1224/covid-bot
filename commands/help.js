@@ -1,4 +1,5 @@
 require('dotenv').config();
+const Discord = require('discord.js');
 
 module.exports = {
 	name: 'help',
@@ -8,13 +9,15 @@ module.exports = {
 	execute(message, args) {
 		const data = [];
 		const { commands } = message.client;
-
+		const helpEmbed = new Discord.MessageEmbed();
 		if (!args.length) {
-			data.push('**Here\'s a list of all my commands:**\n');
-			data.push(commands.map(command => command.name).join(', '));
-			data.push('\nUse ' + process.env.PREFIX + 'help [command name] to get info on a specific command.');
+			helpEmbed.setTitle('List of all my Commands');
+			helpEmbed.setDescription('Use ' + process.env.PREFIX + 'help [command name] to get info on a specific command.');
+			commands.forEach(command => {
+				helpEmbed.addField(command.name, command.description);
+			});
 
-			return message.author.send(data, { split: true })
+			return message.author.send(helpEmbed)
 				.then(() => {
 					if (message.channel.type === 'dm') return;
 					message.reply('A DM has been sent to you with a list of commands.');
@@ -22,7 +25,7 @@ module.exports = {
 				.catch(error => {
 					console.error('Could not send help DM to ' + message.author.tag + '\n', error);
 					message.reply('Unable to send DM with list of commands.');
-					message.channel.send(data, { split: true });
+					message.channel.send(helpEmbed);
 				});
 		}
 

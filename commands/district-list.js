@@ -3,7 +3,7 @@ require('dotenv').config();
 
 module.exports = {
 	name: 'district-list',
-	description: 'List of valid districts and statecodes in India.',
+	description: 'List of valid districts in India.',
 	usage: '[statecode]',
 	args: true,
 	async execute(message, args) {
