@@ -25,6 +25,7 @@ async function startDiagnosis(message, answers) {
 					})
 					.catch(() => {answers.push(-1);});
 			});
+		await sleep(5000);
 	}, Promise.resolve());
 }
 
@@ -38,7 +39,7 @@ module.exports = {
 		message.author.send('**Beginning diagnostic tool for COVID-19**');
 		await sleep(1000);
 		message.author.send('Please select the statements that apply to you. \nReact with 👍 or 👎.')
-			.then(message.author.send('Do you have any of the following symptoms? \nReact with 👍 or 👎 for each symptom.'));
+			.then(message.author.send('Do you have any of the following symptoms?'));
 		await sleep(1000);
 		await startDiagnosis(message, answers);
 
