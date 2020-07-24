@@ -24,6 +24,8 @@ To add the bot to your server, [click here](https://discordapp.com/oauth2/author
 
 * tools.js: Additional functions that are common for multiple commands.
 
+* diagnosis.json: Questions for the diagnostic tool (WIP).
+
 ## Run
 
 Run the bot using Node.js
@@ -32,12 +34,16 @@ Run the bot using Node.js
 node app.js
 ```
 
+## Deployment
+
+Deployed using Heroku
+
 ## Credits
 
-COVID19 India Data:
+* COVID19 India Data:
 
    <https://api.covid19india.org/>
 
-Medical Data:
+* Medical Data:
 
    <https://developer.infermedica.com>
