@@ -9,6 +9,29 @@ const toIndianFormat = (number) => {
 	return res;
 };
 
+const checkValidDistrict = (district, state, stateData) => {
+	for (const i in stateData[state]['districtData']) {
+		if (i === district) {
+			return true;
+		}
+	}
+
+	return false;
+};
+
+const checkValidState = (state, nationalData) => {
+	for (const i in nationalData['statewise']) {
+		const temp = nationalData['statewise'][i]['statecode'];
+		if (temp === state) {
+			return i;
+		}
+	}
+
+	return -1;
+};
+
 module.exports = {
 	toIndianFormat,
+	checkValidDistrict,
+	checkValidState
 };

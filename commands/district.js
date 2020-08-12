@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const { toIndianFormat } = require('../tools.js');
+const { toIndianFormat, checkValidDistrict, checkValidState } = require('../tools.js');
 require('dotenv').config();
 
 module.exports = {
@@ -16,34 +16,21 @@ module.exports = {
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
-		let state;
-		let found = false;
+		
+		let index = checkValidState(stateCode, nationalData);
 
-		for (const i in nationalData['statewise']) {
-			const temp = nationalData['statewise'][i]['statecode'];
-			if (temp === stateCode) {
-				state = nationalData['statewise'][i]['state'];
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
+		if (index == -1) {
 			message.channel.send('Not a valid statecode, use ' + process.env.PREFIX + 'state-list to see a list of statecodes');
 			return;
 		}
 
-		found = false;
+		let state = nationalData['statewise'][index]['state'];
+
 		let district = '';
 		args = args.splice(1);
 		district = args.join(' ');
 
-		for (const i in stateData[state]['districtData']) {
-			if (i === district) {
-				found = true;
-				break;
-			}
-		}
+		let found = checkValidDistrict(district, state, stateData);
 
 		if (!found) {
 			message.channel.send('Not a valid district, use ' + process.env.PREFIX + 'district-list [statecode] to see a list of districts');
