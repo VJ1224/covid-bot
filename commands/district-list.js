@@ -21,21 +21,21 @@ module.exports = {
 		let index = checkValidState(stateCode, nationalData)
 
 		if (index == -1) {
-			message.channel.send('Not a valid statecode, use ' + process.env.PREFIX + 'state-list to see a list of statecodes');
+			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
 			return;
 		}
 
 		let state = nationalData['statewise'][index]['state'];
-		let districts = '**Here\'s a list of districts in ' + state + ': **\n';
+		let districts = `**Here's a list of districts in ${state}: **`;
 
 		for (const i in stateData[state]['districtData']) {
-			districts = districts.concat('\n' + i);
+			districts = districts.concat(`\n${i}`);
 		}
 
 		message.author.send(districts)
 			.then(() => {
 				if (message.channel.type === 'dm') return;
-				message.reply('A DM has been sent to you with a list of districts in ' + state + '.');
+				message.reply(`A DM has been sent to you with a list of districts in ${state}.`);
 			});
 	},
 };

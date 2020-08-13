@@ -8,10 +8,11 @@ module.exports = {
 	usage: ' ',
 	execute: async function (message, args) { // eslint-disable-line no-unused-vars
 		const subreddit = 'r/CoronavirusMemes';
-		const memes = await fetch('https://www.reddit.com/' + subreddit + '/hot/.json?limit=100')
+		const memes = await fetch(`https://www.reddit.com/${subreddit}/hot/.json?limit=100`)
 			.then(response => response.json())
 			.catch(error => console.error(error));
 
+		// noinspection JSUnusedAssignment
 		let posts = message.channel.nsfw ? memes.data.children : memes.data.children.filter(post => !post.data.over_18);
 		posts = memes.data.children.filter(post => post.data.post_hint === 'image');
 
@@ -21,9 +22,9 @@ module.exports = {
 
 		const memeEmbed = new Discord.MessageEmbed()
 			.setTitle(posts[random_number].data.title)
-			.setDescription('Posted by: ' + posts[random_number].data.author)
+			.setDescription(`Posted by: ${posts[random_number].data.author}`)
 			.setImage(posts[random_number].data.url)
-			.setFooter('Memes from ' + subreddit);
+			.setFooter(`Memes from ${subreddit}`);
 
 		message.channel.send(memeEmbed);
 	},

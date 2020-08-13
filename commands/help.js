@@ -13,7 +13,7 @@ module.exports = {
 
 		if (!args.length) {
 			helpEmbed.setTitle('List of all my Commands');
-			helpEmbed.setDescription('Use ' + process.env.PREFIX + 'help [command name] to get info on a specific command.');
+			helpEmbed.setDescription(`Use ${process.env.PREFIX}help [command name] to get info on a specific command.`);
 			commands.forEach(command => {
 				helpEmbed.addField(command.name, command.description);
 			});
@@ -24,7 +24,7 @@ module.exports = {
 					message.reply('A DM has been sent to you with a list of commands.');
 				})
 				.catch(error => {
-					console.error('Could not send help DM to ' + message.author.tag + '\n', error);
+					console.error(`Could not send help DM to ${message.author.tag}`, error);
 					message.reply('Unable to send DM with list of commands.');
 					message.channel.send(helpEmbed);
 				});
@@ -37,11 +37,11 @@ module.exports = {
 			return message.reply('Not a valid command.');
 		}
 
-		data.push('**Name:** ' + command.name);
+		data.push(`**Name:** ${command.name}`);
 
-		if (command.aliases) data.push('**Aliases:** ' + command.aliases.join(', '));
-		if (command.description) data.push('**Description:** ' + command.description);
-		if (command.usage) data.push('**Usage:** ' + process.env.PREFIX + command.name + ' ' + command.usage);
+		if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
+		if (command.description) data.push(`**Description:** ${command.description}`);
+		if (command.usage) data.push(`**Usage:** ${process.env.PREFIX}${command.name} ${command.usage}`);
 
 		message.channel.send(data, {split: true});
 	},

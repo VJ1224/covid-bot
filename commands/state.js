@@ -17,12 +17,12 @@ module.exports = {
 		let index = checkValidState(state, nationalData);
 
 		if (index == -1) {
-			message.channel.send('Not a valid statecode, use ' + process.env.PREFIX + 'state-list to see a list of statecodes');
+			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
 			return;
 		}
 
 		const casesEmbed = new Discord.MessageEmbed()
-			.setTitle('COVID-19 Cases in ' + nationalData['statewise'][index]['state'] + ', India')
+			.setTitle(`COVID-19 Cases in ${nationalData['statewise'][index]['state']}, India`)
 			.addFields(
 				{
 					name: 'Confirmed',

@@ -22,7 +22,7 @@ module.exports = {
 		let index = checkValidState(stateCode, nationalData);
 
 		if (index == -1) {
-			message.channel.send('Not a valid statecode, use ' + process.env.PREFIX + 'state-list to see a list of statecodes');
+			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
 			return;
 		}
 
@@ -35,12 +35,12 @@ module.exports = {
 		let found = checkValidDistrict(district, state, stateData);
 
 		if (!found) {
-			message.channel.send('Not a valid district, use ' + process.env.PREFIX + 'district-list [statecode] to see a list of districts');
+			message.channel.send(`Not a valid district, use ${process.env.PREFIX}district-list [statecode] to see a list of districts`);
 			return;
 		}
 
 		const casesEmbed = new Discord.MessageEmbed()
-			.setTitle('COVID-19 Cases in ' + district + ', ' + state + ', India')
+			.setTitle(`COVID-19 Cases in ${district}, ${state}, India`)
 			.addFields(
 				{
 					name: 'Confirmed',

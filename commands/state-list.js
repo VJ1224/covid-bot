@@ -12,13 +12,13 @@ module.exports = {
 		let states = '**Here\'s a list of statecodes: **\n';
 
 		for (let i = 0; i < nationalData['statewise'].length; i++) {
-			states = states.concat('\n' + nationalData['statewise'][i]['statecode'] + ': ' + nationalData['statewise'][i]['state']);
+			states = states.concat(`\n${nationalData['statewise'][i]['statecode']}: ${nationalData['statewise'][i]['state']}`);
 		}
 
 		message.author.send(states)
 			.then(() => {
 				if (message.channel.type === 'dm') return;
-				message.reply('A DM has been sent to you with a list of statecodes.');
+				message.reply('A DM has been sent to you with a list of states.');
 			});
 	},
 };

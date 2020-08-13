@@ -14,7 +14,7 @@ module.exports = {
 		const length = nationalData['cases_time_series'].length;
 
 		const casesEmbed = new Discord.MessageEmbed()
-			.setTitle('COVID-19 Cases in India on ' + nationalData['cases_time_series'][length - 1]['date'])
+			.setTitle(`COVID-19 Cases in India on ${nationalData['cases_time_series'][length - 1]['date']}`)
 			.addFields(
 				{
 					name: 'Confirmed',

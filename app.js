@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
-require('dotenv').config();
 const fs = require('fs');
+require('dotenv').config();
+
+const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -16,18 +17,18 @@ client.on('ready', () => {
 	console.log('Servers connected to:');
 	const guildNames = client.guilds.cache.map(guild => guild.name + ': ' + guild.id).join('\n');
 	console.log(guildNames);
-	client.user.setPresence({ activity: { name: 'Plague Inc. | ' + process.env.PREFIX + 'help' }, status: 'online' });
+	client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help` }, status: 'online' });
 });
 
 client.on('guildCreate', guild => {
 	if (guild.available) {
-		console.log('Added to: ' + guild.name + ': ' + guild.id);
+		console.log(`Added to: ${guild.name}: ${guild.id}`);
 	}
 });
 
 client.on('guildDelete', guild => {
 	if (guild.available) {
-		console.log('Removed from: ' + guild.name + ': ' + guild.id);
+		console.log(`Removed from: ${guild.name}: ${guild.id}`);
 	}
 });
 
@@ -50,7 +51,7 @@ client.on('message', message => {
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) {
-		message.reply('Not a valid command, use ' + process.env.PREFIX + 'help to see a list of valid commands.');
+		message.reply(`Not a valid command, use ${process.env.PREFIX}help to see a list of valid commands.`);
 		return;
 	}
 
@@ -58,7 +59,7 @@ client.on('message', message => {
 		let reply = 'No arguments provided.';
 
 		if (command.usage) {
-			reply += '\nUsage: ' + process.env.PREFIX + command.name + ' ' + command.usage;
+			reply += `Usage: ${process.env.PREFIX}${command.name} ${command.usage}`;
 		}
 
 		return message.channel.send(reply);
