@@ -20,7 +20,7 @@ module.exports = {
 
 		let index = checkValidState(stateCode, nationalData)
 
-		if (index == -1) {
+		if (index === -1) {
 			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
 			return;
 		}
