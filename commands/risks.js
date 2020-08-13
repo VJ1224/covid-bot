@@ -6,7 +6,7 @@ module.exports = {
 	name: 'risks',
 	description: 'COVID-19 Risk Factors.',
 	usage: ' ',
-	async execute(message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message, args) { // eslint-disable-line no-unused-vars
 		const url = 'https://api.infermedica.com/covid19/risk_factors';
 		const options = {
 			headers: {

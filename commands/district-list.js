@@ -7,11 +7,13 @@ module.exports = {
 	description: 'List of valid districts in India.',
 	usage: '[statecode]',
 	args: true,
-	async execute(message, args) {
+	execute: async function (message, args) {
 		const stateCode = args[0].toUpperCase();
+
 		const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
+
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
@@ -25,7 +27,7 @@ module.exports = {
 
 		let state = nationalData['statewise'][index]['state'];
 		let districts = '**Here\'s a list of districts in ' + state + ': **\n';
-		
+
 		for (const i in stateData[state]['districtData']) {
 			districts = districts.concat('\n' + i);
 		}

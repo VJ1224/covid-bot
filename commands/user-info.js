@@ -2,10 +2,10 @@ module.exports = {
 	name: 'user-info',
 	description: 'User Information',
 	usage: '@user<optional>',
-	execute(message, args) { // eslint-disable-line no-unused-vars
+	execute: function (message, args) { // eslint-disable-line no-unused-vars
 		if (message.mentions.users.size == 0) {
 			message.channel.send('Your username: ' + message.author.username +
-			'\nYour ID: ' + message.author.id);
+				'\nYour ID: ' + message.author.id);
 			return;
 		}
 

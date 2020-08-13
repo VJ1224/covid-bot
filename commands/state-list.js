@@ -4,10 +4,11 @@ module.exports = {
 	name: 'state-list',
 	description: 'List of valid states and statecodes in India.',
 	usage: ' ',
-	async execute(message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message, args) { // eslint-disable-line no-unused-vars
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
+
 		let states = '**Here\'s a list of statecodes: **\n';
 
 		for (let i = 0; i < nationalData['statewise'].length; i++) {
