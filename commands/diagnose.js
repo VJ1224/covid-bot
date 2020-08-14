@@ -9,11 +9,11 @@ async function startDiagnosis(message, answers) {
 		return ['👍', '👎'].includes(reaction.emoji.name);
 	};
 
-	data.reduce(async (promise, item)=> {
-		await promise;
+	await data.reduce(async (promise, item)=> {
+		await Promise;
 		message.author.send(item.name)
-			.then(messageItem => {
-				messageItem.awaitReactions(filter, { max: 1, time: 300000, errors: ['time'] })
+			.then(itemMessage => {
+				itemMessage.awaitReactions(filter, { max: 1, time: 300000, errors: ['time'] })
 					.then(collected => {
 						const reaction = collected.first();
 						if (reaction.emoji.name === '👍') {
@@ -25,8 +25,7 @@ async function startDiagnosis(message, answers) {
 					})
 					.catch(() => {answers.push(-1);});
 			});
-		await sleep(5000);
-	}, Promise.resolve());
+	});
 }
 
 module.exports = {

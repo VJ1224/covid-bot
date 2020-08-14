@@ -10,29 +10,29 @@ module.exports = {
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
-		const length = nationalData['tested'].length - 1;
+		const last = nationalData['tested'].length - 1;
 
 		const casesEmbed = new Discord.MessageEmbed()
 			.setTitle('COVID-19 Tests in India')
 			.addFields(
 				{
 					name: 'Total',
-					value: toIndianFormat(nationalData['tested'][length]['totalsamplestested']),
+					value: toIndianFormat(nationalData['tested'][last]['totalsamplestested']),
 					inline: true
 				},
 				{
 					name: 'Tests Per Million',
-					value: toIndianFormat(nationalData['tested'][length]['testspermillion']),
+					value: toIndianFormat(nationalData['tested'][last]['testspermillion']),
 					inline: true
 				},
 				{
 					name: 'Tests Today',
-					value: toIndianFormat(nationalData['tested'][length]['samplereportedtoday']),
+					value: toIndianFormat(nationalData['tested'][last]['samplereportedtoday']),
 					inline: true
 				},
 				{
 					name: 'Last Updated On:',
-					value: nationalData['tested'][length]['updatetimestamp']
+					value: nationalData['tested'][last]['updatetimestamp']
 				}
 			);
 
