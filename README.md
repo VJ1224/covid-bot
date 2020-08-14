@@ -24,8 +24,6 @@ To add the bot to your server, [click here](https://discord.com/oauth2/authorize
 
 * tools.js: Additional functions that are common for multiple commands.
 
-* diagnosis.json: Questions for the diagnostic tool (WIP).
-
 ## Run
 
 Run the bot using Node.js
