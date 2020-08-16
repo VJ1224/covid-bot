@@ -9,20 +9,18 @@ async function askGender(message, person) {
 		return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id === message.author.id;
 	};
 
-	message.author.send('Choose your gender ♂ or ♀').then(async message => {
-		message.react('♂️').then(() => message.react('♀️'));
+	message = await message.author.send('Choose your gender ♂ or ♀');
+	message.react('♂️').then(() => message.react('♀️'));
 
-		message.awaitReactions(genderFilter, { max: 1, time: 60000, errors: ['time'] })
-			.then(collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '♂️') person.sex = 'male';
-				else person.sex = 'female';
-			})
-			.catch(error => {
-				person.sex = null;
-				console.error(error);
-			});
-	});
+	try {
+		const response = await message.awaitReactions(genderFilter, { max: 1, time: 60000, errors: ['time'] });
+		const reaction = response.first();
+		if (reaction.emoji.name === '♂️') person.sex = 'male';
+		else person.sex = 'female';
+	} catch (error) {
+		person.sex = null;
+		console.error(error);
+	}
 }
 
 async function askAge(message, person) {
@@ -30,16 +28,15 @@ async function askAge(message, person) {
 		return !Number.isNaN(response);
 	};
 
-	await message.author.send('How old are you?').then(async message => {
-		message.channel.awaitMessages(ageFilter, { max: 1, time: 60000, errors: ['time']})
-			.then(collected => {
-				person.age = parseInt(collected.first().content);
-			})
-			.catch(error => {
-				person.age = null;
-				console.error(error);
-			});
-	});
+	message = await message.author.send('How old are you?');
+
+	try {
+		const response = await message.channel.awaitMessages(ageFilter, { max: 1, time: 60000, errors: ['time']});
+		person.age = parseInt(response.first().content);
+	} catch (error) {
+		person.age = null;
+		console.error(error);
+	}
 }
 
 async function getQuestions(person, evidence) {
