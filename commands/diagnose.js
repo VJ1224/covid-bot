@@ -4,50 +4,88 @@ require('dotenv').config();
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
+async function askGender(message, person) {
+	const genderFilter = (reaction, user) => {
+		return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id === message.author.id;
+	};
+
+	message.author.send('Choose your gender ♂ or ♀').then(async message => {
+		message.react('♂️').then(() => message.react('♀️'));
+
+		message.awaitReactions(genderFilter, { max: 1, time: 60000, errors: ['time'] })
+			.then(collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '♂️') person.sex = 'male';
+				else person.sex = 'female';
+			})
+			.catch(error => {
+				person.sex = null;
+				console.error(error);
+			});
+	});
+
+}
+
+async function askAge(message, person) {
+	const ageFilter = response => {
+		return !Number.isNaN(response);
+	};
+
+	await message.author.send('How old are you?').then(async message => {
+		message.channel.awaitMessages(ageFilter, { max: 1, time: 60000, errors: ['time']})
+			.then(collected => {
+				person.age = parseInt(collected.first().content);
+			})
+			.catch(error => {
+				person.age = null;
+				console.error(error);
+			});
+	});
+}
+
 module.exports = {
 	name: 'diagnose',
 	description: 'COVID-19 diagnostic tool.',
 	usage: ' ',
 	execute: async function (message, args) { // eslint-disable-line no-unused-vars
+		const instance = axios.create({
+			baseURL: 'https://api.infermedica.com/covid19',
+			headers: {
+				'App-Id': process.env.INFERMEDICA_ID,
+				'App-Key': process.env.INFERMEDICA_KEY
+			}
+		});
+
 		if (message.channel.type !== 'dm')
 			message.reply('A DM has been sent to you for diagnosis.');
 
 		const evidence = [];
-		let sex, age;
+		let person = {
+			sex: undefined,
+			age: undefined
+		}
 
-		const genderFilter = (reaction, user) => {
-			return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
+		message.author.send('**Beginning diagnostic tool for COVID-19**');
 
-		const ageFilter = response => {
-			return !Number.isNaN(response);
-		};
+		await askGender(message, person);
+		await askAge(message, person);
 
-		await message.author.send('**Beginning diagnostic tool for COVID-19**');
+		while (person.sex === undefined || person.age === undefined) {
+			await sleep(500);
+		}
 
-		await message.author.send('Choose your gender ♂ or ♀').then(async message => {
-			message.react('♂️').then(() => message.react('♀️'));
+		if (person.sex === null && person.age === null) {
+			message.author.send('**Exiting diagnostic tool for COVID-19**');
+			return;
+		}
 
-			message.awaitReactions(genderFilter, { max: 1, time: 60000, errors: ['time'] })
-				.then(collected => {
-					const reaction = collected.first();
-					if (reaction.emoji.name === '♂️') sex = 'male';
-					else sex = 'female';
-				})
-				.catch(() => {
-					message.channel.send('**Exiting diagnostic tool for COVID-19**');
-				});
-		});
+		message.author.send(`You are a ${person.age} year old ${person.sex}.`);
 
-		await message.author.send('How old are you?').then(async message => {
-			message.channel.awaitMessages(ageFilter, { max: 1, time: 60000, errors: ['time']})
-				.then(collected => {
-					age = collected.first().content;
-					message.channel.send(`You are a ${age} year old ${sex}`);
-				})
-				.catch(() => {
-					message.channel.send('**Exiting diagnostic tool for COVID-19**');
-				});
-		});
+		instance.post('/diagnosis', {
+			'age': person.age,
+			'sex': person.sex,
+			'evidence': evidence
+		}).then(response => console.log(response.data))
+			.catch(error => console.log(error));
 	},
 };
