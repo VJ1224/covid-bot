@@ -1,32 +1,8 @@
 const Discord = require('discord.js');
+const axios = require('axios')
 require('dotenv').config();
-const data = require('../diagnosis.json');
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
-
-async function startDiagnosis(message, answers) {
-	const filter = (reaction) => {
-		return ['👍', '👎'].includes(reaction.emoji.name);
-	};
-
-	await data.reduce(async (promise, item)=> {
-		await Promise;
-		message.author.send(item.name)
-			.then(itemMessage => {
-				itemMessage.awaitReactions(filter, { max: 1, time: 300000, errors: ['time'] })
-					.then(collected => {
-						const reaction = collected.first();
-						if (reaction.emoji.name === '👍') {
-							answers.push(parseInt(item.score));
-						}
-						else {
-							answers.push(0);
-						}
-					})
-					.catch(() => {answers.push(-1);});
-			});
-	});
-}
 
 module.exports = {
 	name: 'diagnose',
@@ -36,36 +12,42 @@ module.exports = {
 		if (message.channel.type !== 'dm')
 			message.reply('A DM has been sent to you for diagnosis.');
 
-		const answers = [];
-		message.author.send('**Beginning diagnostic tool for COVID-19**');
+		const evidence = [];
+		let sex, age;
 
-		await sleep(1000);
-		message.author.send('Please select the statements that apply to you. \nReact with 👍 or 👎.')
-			.then(message.author.send('Do you have any of the following symptoms?'));
+		const genderFilter = (reaction, user) => {
+			return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
 
-		await sleep(1000);
-		await startDiagnosis(message, answers);
+		const ageFilter = response => {
+			return !Number.isNaN(response);
+		};
 
-		while (answers.length !== data.length) {
-			await sleep(1000);
-		}
-		const score = answers.reduce((sum, a) => sum + a, 0);
-		const embed = new Discord.MessageEmbed()
-			.setTitle('COVID-19 Diagnosis Results');
+		await message.author.send('**Beginning diagnostic tool for COVID-19**');
 
-		if (score > 15) {
-			embed.setDescription('High risk of COVID-19. Call an emergency number or a medical professional to get further assistance.');
-		} else if (score > 10) {
-			embed.setDescription('Medium risk of COVID-19. Get yourself tested and contact a medical professional for further assistance.');
-		} else if (score > 5) {
-			embed.setDescription('Low risk of COVID-19. Few symptoms may be linked, continue to monitor them and take precautions. Consult a medical professional for further assistance.');
-		} else {
-			embed.setDescription('Low risk of COVID-19, continue to stay safe and take preventive measures.');
-		}
+		await message.author.send('Choose your gender ♂ or ♀').then(async message => {
+			message.react('♂️').then(() => message.react('♀️'));
 
-		if (score >= 0)
-			message.author.send(embed);
+			message.awaitReactions(genderFilter, { max: 1, time: 60000, errors: ['time'] })
+				.then(collected => {
+					const reaction = collected.first();
+					if (reaction.emoji.name === '♂️') sex = 'male';
+					else sex = 'female';
+				})
+				.catch(() => {
+					message.channel.send('**Exiting diagnostic tool for COVID-19**');
+				});
+		});
 
-		message.author.send('**Exiting diagnostic tool for COVID-19**');
+		await message.author.send('How old are you?').then(async message => {
+			message.channel.awaitMessages(ageFilter, { max: 1, time: 60000, errors: ['time']})
+				.then(collected => {
+					age = collected.first().content;
+					message.channel.send(`You are a ${age} year old ${sex}`);
+				})
+				.catch(() => {
+					message.channel.send('**Exiting diagnostic tool for COVID-19**');
+				});
+		});
 	},
 };
