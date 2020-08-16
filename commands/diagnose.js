@@ -23,7 +23,6 @@ async function askGender(message, person) {
 				console.error(error);
 			});
 	});
-
 }
 
 async function askAge(message, person) {
@@ -43,19 +42,29 @@ async function askAge(message, person) {
 	});
 }
 
+async function getQuestions(person, evidence) {
+	const instance = axios.create({
+		baseURL: 'https://api.infermedica.com/covid19',
+		headers: {
+			'App-Id': process.env.INFERMEDICA_ID,
+			'App-Key': process.env.INFERMEDICA_KEY
+		}
+	});
+
+	let response = await instance.post('/diagnosis', {
+		'age': person.age,
+		'sex': person.sex,
+		'evidence': evidence
+	});
+
+	return response.data;
+}
+
 module.exports = {
 	name: 'diagnose',
 	description: 'COVID-19 diagnostic tool.',
 	usage: ' ',
 	execute: async function (message, args) { // eslint-disable-line no-unused-vars
-		const instance = axios.create({
-			baseURL: 'https://api.infermedica.com/covid19',
-			headers: {
-				'App-Id': process.env.INFERMEDICA_ID,
-				'App-Key': process.env.INFERMEDICA_KEY
-			}
-		});
-
 		if (message.channel.type !== 'dm')
 			message.reply('A DM has been sent to you for diagnosis.');
 
@@ -81,11 +90,6 @@ module.exports = {
 
 		message.author.send(`You are a ${person.age} year old ${person.sex}.`);
 
-		instance.post('/diagnosis', {
-			'age': person.age,
-			'sex': person.sex,
-			'evidence': evidence
-		}).then(response => console.log(response.data))
-			.catch(error => console.log(error));
+		let result = await getQuestions(person, evidence);
 	},
 };
