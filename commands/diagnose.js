@@ -44,7 +44,7 @@ module.exports = {
 			message = await message.channel.send(result.question.text);
 			let item_type = result.question.type;
 
-			for (item of result.question.items) {
+			for (let item of result.question.items) {
 				if (item_type !== 'single')
 					message = await message.channel.send(item.name);
 
