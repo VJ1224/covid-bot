@@ -126,21 +126,31 @@ async function askAge(message, person) {
 }
 
 async function getQuestions(person, evidence) {
-	let response = await axios_instance.post('/diagnosis', {
-		'age': person.age,
-		'sex': person.sex,
-		'evidence': evidence
-	});
+	try {
+		let response = await axios_instance.post('/diagnosis', {
+			'age': person.age,
+			'sex': person.sex,
+			'evidence': evidence
+		});
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
 
 	return response.data;
 }
 
 async function getAnswer(person, evidence) {
-	let response = await axios_instance.post('/triage', {
-		'age': person.age,
-		'sex': person.sex,
-		'evidence': evidence
-	});
+	try {
+		let response = await axios_instance.post('/triage', {
+			'age': person.age,
+			'sex': person.sex,
+			'evidence': evidence
+		});
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
 
 	return response.data;
 }
