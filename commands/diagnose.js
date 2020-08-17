@@ -72,6 +72,11 @@ module.exports = {
 
 		result = await getAnswer(person, evidence);
 
+		if (result === null) {
+			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			return;
+		}
+
 		const resultEmbed = new Discord.MessageEmbed()
 			.setTitle(`Diagnosis Results: ${result.label}`)
 			.setDescription(result.description);
@@ -132,12 +137,12 @@ async function getQuestions(person, evidence) {
 			'sex': person.sex,
 			'evidence': evidence
 		});
+
+		return response.data;
 	} catch (e) {
 		console.error(e);
 		return null;
 	}
-
-	return response.data;
 }
 
 async function getAnswer(person, evidence) {
@@ -147,10 +152,10 @@ async function getAnswer(person, evidence) {
 			'sex': person.sex,
 			'evidence': evidence
 		});
+
+		return response.data;
 	} catch (e) {
 		console.error(e);
 		return null;
 	}
-
-	return response.data;
 }
