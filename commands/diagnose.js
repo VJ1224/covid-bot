@@ -31,7 +31,6 @@ module.exports = {
 			return;
 		}
 
-		await message.channel.send(`You are a ${person.age} year old ${person.sex}.`);
 		await message.channel.send('React with 👍 or 👎 for each question');
 
 		let result = await getQuestions(person, evidence);
