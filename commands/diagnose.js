@@ -4,6 +4,14 @@ require('dotenv').config();
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
+const axios_instance = axios.create({
+	baseURL: 'https://api.infermedica.com/covid19',
+	headers: {
+		'App-Id': process.env.INFERMEDICA_ID,
+		'App-Key': process.env.INFERMEDICA_KEY
+	}
+});
+
 async function askGender(message, person) {
 	const genderFilter = (reaction, user) => {
 		return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id !== message.author.id;
@@ -40,15 +48,7 @@ async function askAge(message, person) {
 }
 
 async function getQuestions(person, evidence) {
-	const instance = axios.create({
-		baseURL: 'https://api.infermedica.com/covid19',
-		headers: {
-			'App-Id': process.env.INFERMEDICA_ID,
-			'App-Key': process.env.INFERMEDICA_KEY
-		}
-	});
-
-	let response = await instance.post('/diagnosis', {
+	let response = await axios_instance.post('/diagnosis', {
 		'age': person.age,
 		'sex': person.sex,
 		'evidence': evidence
@@ -58,15 +58,7 @@ async function getQuestions(person, evidence) {
 }
 
 async function getAnswer(person, evidence) {
-	const instance = axios.create({
-		baseURL: 'https://api.infermedica.com/covid19',
-		headers: {
-			'App-Id': process.env.INFERMEDICA_ID,
-			'App-Key': process.env.INFERMEDICA_KEY
-		}
-	});
-
-	let response = await instance.post('/triage', {
+	let response = await axios_instance.post('/triage', {
 		'age': person.age,
 		'sex': person.sex,
 		'evidence': evidence
@@ -98,12 +90,13 @@ module.exports = {
 			await sleep(500);
 		}
 
-		if (person.sex === null && person.age === null) {
+		if (person.sex === null || person.age === null) {
 			message.author.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
-		message.author.send(`You are a ${person.age} year old ${person.sex}.`);
+		await message.author.send(`You are a ${person.age} year old ${person.sex}.`);
+		await message.author.send('React with 👍 or 👎 for each question');
 
 		let result = await getQuestions(person, evidence);
 
@@ -112,8 +105,12 @@ module.exports = {
 		};
 
 		while (!result.should_stop) {
+			message = await message.channel.send(result.question.text);
+			let item_type = result.question.type;
+
 			for (item of result.question.items) {
-				message = await message.channel.send(item.name);
+				if (item_type !== 'single')
+					message = await message.channel.send(item.name);
 
 				try {
 					const response = await message.awaitReactions(yesOrNo, { max: 1, time: 60000, errors: ['time'] });
@@ -131,6 +128,7 @@ module.exports = {
 				} catch (error) {
 					message.author.send('**Exiting diagnostic tool for COVID-19**');
 					console.error(error);
+					return;
 				}
 			}
 
@@ -140,8 +138,8 @@ module.exports = {
 		result = await getAnswer(person, evidence);
 
 		const resultEmbed = new Discord.MessageEmbed()
-			.setTitle(`Diagnosis Results: ${result.triage_level}`)
-			.setDescription(`${result.description}\n${result.label}`);
+			.setTitle(`Diagnosis Results: ${result.label}`)
+			.setDescription(result.description);
 
 		message.channel.send(resultEmbed);
 	},
