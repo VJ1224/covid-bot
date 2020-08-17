@@ -6,7 +6,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 async function askGender(message, person) {
 	const genderFilter = (reaction, user) => {
-		return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		return ['♂️', '♀️'].includes(reaction.emoji.name) && user.id !== message.author.id;
 	};
 
 	message = await message.author.send('Choose your gender ♂ or ♀');
@@ -57,6 +57,24 @@ async function getQuestions(person, evidence) {
 	return response.data;
 }
 
+async function getAnswer(person, evidence) {
+	const instance = axios.create({
+		baseURL: 'https://api.infermedica.com/covid19',
+		headers: {
+			'App-Id': process.env.INFERMEDICA_ID,
+			'App-Key': process.env.INFERMEDICA_KEY
+		}
+	});
+
+	let response = await instance.post('/triage', {
+		'age': person.age,
+		'sex': person.sex,
+		'evidence': evidence
+	});
+
+	return response.data;
+}
+
 module.exports = {
 	name: 'diagnose',
 	description: 'COVID-19 diagnostic tool.',
@@ -88,5 +106,43 @@ module.exports = {
 		message.author.send(`You are a ${person.age} year old ${person.sex}.`);
 
 		let result = await getQuestions(person, evidence);
+
+		const yesOrNo = (reaction, user) => {
+			return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
+		};
+
+		while (!result.should_stop) {
+			for (item of result.question.items) {
+				message = await message.channel.send(item.name);
+
+				try {
+					const response = await message.awaitReactions(yesOrNo, { max: 1, time: 60000, errors: ['time'] });
+					const reaction = response.first();
+					if (reaction.emoji.name === '👍')
+						evidence.push({
+							'id': item.id,
+							'choice_id': 'present'
+						})
+					else
+						evidence.push({
+						'id': item.id,
+						'choice_id': 'absent'
+					})
+				} catch (error) {
+					message.author.send('**Exiting diagnostic tool for COVID-19**');
+					console.error(error);
+				}
+			}
+
+			result = await getQuestions(person, evidence);
+		}
+
+		result = await getAnswer(person, evidence);
+
+		const resultEmbed = new Discord.MessageEmbed()
+			.setTitle(`Diagnosis Results: ${result.triage_level}`)
+			.setDescription(`${result.description}\n${result.label}`);
+
+		message.channel.send(resultEmbed);
 	},
 };
