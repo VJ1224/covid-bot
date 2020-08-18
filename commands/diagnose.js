@@ -7,7 +7,7 @@ module.exports = {
 	name: 'diagnose',
 	description: 'COVID-19 diagnostic tool.',
 	usage: ' ',
-	execute: async function (message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message, args) {
 		if (message.channel.type !== 'dm')
 			message.reply('A DM has been sent to you for diagnosis.');
 
@@ -20,26 +20,33 @@ module.exports = {
 		message = await message.author.send('**Beginning diagnostic tool for COVID-19**');
 
 		await askGender(message, person);
-		await askAge(message, person);
 
-		while (person.sex === undefined || person.age === undefined) {
-			await sleep(500);
+		if (!person.sex) {
+			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			return;
 		}
 
-		if (person.sex === null || person.age === null) {
+		await askAge(message, person);
+
+		if (!person.age) {
 			message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
 		await message.channel.send('React with 👍 or 👎 for each question');
 
-		let result = await getQuestions(person, evidence);
-
 		const yesOrNo = (reaction, user) => {
 			return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
 		};
 
+		let result = await getQuestions(person, evidence);
+
 		while (!result.should_stop) {
+			if (!result) {
+				message.channel.send('**Exiting diagnostic tool for COVID-19**');
+				return;
+			}
+
 			message = await message.channel.send(result.question.text);
 			let item_type = result.question.type;
 
@@ -55,7 +62,7 @@ module.exports = {
 							'id': item.id,
 							'choice_id': 'present'
 						})
-					else
+					else if (item_type !== 'group_single')
 						evidence.push({
 						'id': item.id,
 						'choice_id': 'absent'
@@ -72,7 +79,7 @@ module.exports = {
 
 		result = await getAnswer(person, evidence);
 
-		if (result === null) {
+		if (!result) {
 			message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
@@ -84,8 +91,6 @@ module.exports = {
 		message.channel.send(resultEmbed);
 	},
 };
-
-const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 const axios_instance = axios.create({
 	baseURL: 'https://api.infermedica.com/covid19',
