@@ -41,12 +41,12 @@ module.exports = {
 
 		let result = await getQuestions(person, evidence);
 
-		while (!result.should_stop) {
-			if (!result) {
-				message.channel.send('**Exiting diagnostic tool for COVID-19**');
-				return;
-			}
+		if (!result) {
+			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			return;
+		}
 
+		while (!result.should_stop) {
 			message = await message.channel.send(result.question.text);
 			let item_type = result.question.type;
 
@@ -75,6 +75,11 @@ module.exports = {
 			}
 
 			result = await getQuestions(person, evidence);
+
+			if (!result) {
+				message.channel.send('**Exiting diagnostic tool for COVID-19**');
+				return;
+			}
 		}
 
 		result = await getAnswer(person, evidence);
