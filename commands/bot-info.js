@@ -5,7 +5,7 @@ module.exports = {
 	name: 'bot-info',
 	description: 'Bot Information',
 	usage: ' ',
-	execute: function (message, args) { // eslint-disable-line no-unused-vars
+	execute: function (message) {
 		const infoEmbed = new Discord.MessageEmbed()
 			.setTitle('COVID-19 India Bot')
 			.setDescription(`A COVID-19 Information bot that gives updates regarding the cases in India. 

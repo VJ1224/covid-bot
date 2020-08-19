@@ -5,7 +5,7 @@ module.exports = {
 	aliases: ['emergency'],
 	description: 'COVID-19 help and resources.',
 	usage: ' ',
-	execute: function (message, args) { // eslint-disable-line no-unused-vars
+	execute: function (message) {
 		const casesEmbed = new Discord.MessageEmbed()
 			.setTitle('COVID-19 Help for India')
 			.addFields(

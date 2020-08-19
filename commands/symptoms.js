@@ -6,7 +6,7 @@ module.exports = {
 	name: 'symptoms',
 	description: 'COVID-19 symptoms.',
 	usage: ' ',
-	execute: async function (message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message) {
 		const url = 'https://api.infermedica.com/covid19/symptoms';
 		const options = {
 			headers: {

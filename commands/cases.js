@@ -7,8 +7,7 @@ module.exports = {
 	aliases: ['total'],
 	description: 'India\'s total COVID-19 cases.',
 	usage: ' ',
-	execute: async function (message, args) { // eslint-disable-line no-unused-vars
-
+	execute: async function (message) {
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));

@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['meme'],
 	description: 'Sends a COVID-19 meme.',
 	usage: ' ',
-	execute: async function (message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message) {
 		const subreddit = 'r/CoronavirusMemes';
 		const memes = await fetch(`https://www.reddit.com/${subreddit}/hot/.json?limit=100`)
 			.then(response => response.json())

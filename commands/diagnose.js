@@ -7,7 +7,7 @@ module.exports = {
 	name: 'diagnose',
 	description: 'COVID-19 diagnostic tool.',
 	usage: ' ',
-	execute: async function (message, args) {
+	execute: async function (message) {
 		if (message.channel.type !== 'dm')
 			message.reply('A DM has been sent to you for diagnosis.');
 
@@ -39,18 +39,18 @@ module.exports = {
 			return ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
 		};
 
-		let result = await getQuestions(person, evidence);
+		let diagnosis = await getDiagnosis(person, evidence, '/diagnosis');
 
-		if (!result) {
+		if (!diagnosis) {
 			message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
-		while (!result.should_stop) {
-			message = await message.channel.send(result.question.text);
-			let item_type = result.question.type;
+		while (!diagnosis.should_stop) {
+			message = await message.channel.send(diagnosis.question.text);
+			let item_type = diagnosis.question.type;
 
-			for (let item of result.question.items) {
+			for (let item of diagnosis.question.items) {
 				if (item_type !== 'single')
 					message = await message.channel.send(item.name);
 
@@ -74,15 +74,15 @@ module.exports = {
 				}
 			}
 
-			result = await getQuestions(person, evidence);
+			diagnosis = await getDiagnosis(person, evidence, '/diagnosis');
 
-			if (!result) {
+			if (!diagnosis) {
 				message.channel.send('**Exiting diagnostic tool for COVID-19**');
 				return;
 			}
 		}
 
-		result = await getAnswer(person, evidence);
+		let result = await getDiagnosis(person, evidence,'/triage');
 
 		if (!result) {
 			message.channel.send('**Exiting diagnostic tool for COVID-19**');
@@ -140,24 +140,9 @@ async function askAge(message, person) {
 	}
 }
 
-async function getQuestions(person, evidence) {
+async function getDiagnosis(person, evidence, endpoint) {
 	try {
-		let response = await axios_instance.post('/diagnosis', {
-			'age': person.age,
-			'sex': person.sex,
-			'evidence': evidence
-		});
-
-		return response.data;
-	} catch (e) {
-		console.error(e);
-		return null;
-	}
-}
-
-async function getAnswer(person, evidence) {
-	try {
-		let response = await axios_instance.post('/triage', {
+		let response = await axios_instance.post(endpoint, {
 			'age': person.age,
 			'sex': person.sex,
 			'evidence': evidence

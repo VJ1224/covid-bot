@@ -6,10 +6,11 @@ module.exports = {
 	name: 'tests',
 	description: 'India\'s COVID-19 test numbers.',
 	usage: ' ',
-	execute: async function (message, args) { // eslint-disable-line no-unused-vars
+	execute: async function (message) {
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
+
 		const last = nationalData['tested'].length - 1;
 
 		const casesEmbed = new Discord.MessageEmbed()
