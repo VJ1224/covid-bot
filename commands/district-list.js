@@ -18,7 +18,7 @@ module.exports = {
 			.then(response => response.json())
 			.catch(error => console.error(error));
 
-		let index = checkValidState(stateCode, nationalData)
+		let index = await checkValidState(stateCode);
 
 		if (index === -1) {
 			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
@@ -28,14 +28,13 @@ module.exports = {
 		let state = nationalData['statewise'][index]['state'];
 		let districts = `**Here's a list of districts in ${state}: **`;
 
-		for (const i in stateData[state]['districtData']) {
-			districts = districts.concat(`\n${i}`);
+		for (const district in stateData[state]['districtData']) {
+			districts = districts.concat(`\n${district}`);
 		}
 
-		message.author.send(districts)
-			.then(() => {
-				if (message.channel.type === 'dm') return;
-				message.reply(`A DM has been sent to you with a list of districts in ${state}.`);
-			});
+		await message.author.send(districts)
+
+		if (message.channel.type === 'dm') return;
+		message.reply(`A DM has been sent to you with a list of districts in ${state}.`);
 	},
 };

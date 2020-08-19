@@ -1,45 +1,119 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const { toIndianFormat } = require('../tools.js');
+const { checkValidState, checkValidDistrict, toIndianFormat } = require('../tools.js');
 
 module.exports = {
 	name: 'cases',
 	aliases: ['total'],
-	description: 'India\'s total COVID-19 cases.',
-	usage: ' ',
-	execute: async function (message) {
+	description: 'India\'s COVID-19 cases.',
+	usage: '[statecode] [district]',
+	execute: async function (message, args) {
+		let stateCode;
+
+		if (args.length >= 1) {
+			stateCode = args[0].toUpperCase();
+
+			if (args.length > 1) {
+				args = args.splice(1);
+				let district = args.join(' ');
+				await districtData(message, stateCode, district);
+				return;
+			}
+		} else
+			stateCode = 'TT';
+
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
 			.catch(error => console.error(error));
 
+		let index = await checkValidState(stateCode);
+
+		if (index === -1) {
+			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
+			return;
+		}
+
 		const casesEmbed = new Discord.MessageEmbed()
-			.setTitle('COVID-19 Cases in India')
+			.setTitle(`COVID-19 Cases: ${nationalData['statewise'][index]['state']}, India`)
 			.addFields(
 				{
 					name: 'Confirmed',
-					value: toIndianFormat(nationalData['statewise'][0]['confirmed']),
+					value: toIndianFormat(nationalData['statewise'][index]['confirmed']),
 					inline: true
 				},
 				{
-					name: 'Active', value: toIndianFormat(nationalData['statewise'][0]['active']),
+					name: 'Active', value: toIndianFormat(nationalData['statewise'][index]['active']),
 					inline: true
 				},
 				{
 					name: 'Recovered',
-					value: toIndianFormat(nationalData['statewise'][0]['recovered']),
+					value: toIndianFormat(nationalData['statewise'][index]['recovered']),
 					inline: true
 				},
 				{
 					name: 'Deaths',
-					value: toIndianFormat(nationalData['statewise'][0]['deaths']),
+					value: toIndianFormat(nationalData['statewise'][index]['deaths']),
 					inline: true
 				},
 				{
 					name: 'Last Updated On:',
-					value: nationalData['statewise'][0]['lastupdatedtime']
+					value: nationalData['statewise'][index]['lastupdatedtime']
 				}
 			);
 
 		message.channel.send(casesEmbed);
 	},
 };
+
+async function districtData(message, stateCode, district) {
+	const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
+		.then(response => response.json())
+		.catch(error => console.error(error));
+
+	const nationalData = await fetch('https://api.covid19india.org/data.json')
+		.then(response => response.json())
+		.catch(error => console.error(error));
+
+	let index = await checkValidState(stateCode);
+
+	if (index === -1) {
+		message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
+		return;
+	}
+
+	let state = nationalData['statewise'][index]['state'];
+
+	let found = await checkValidDistrict(district, state);
+
+	if (!found) {
+		message.channel.send(`Not a valid district, use ${process.env.PREFIX}district-list [statecode] to see a list of districts`);
+		return;
+	}
+
+	const casesEmbed = new Discord.MessageEmbed()
+		.setTitle(`COVID-19 Cases in ${district}, ${state}, India`)
+		.addFields(
+			{
+				name: 'Confirmed',
+				value: toIndianFormat(stateData[state]['districtData'][district]['confirmed']),
+				inline: true
+			},
+			{
+				name: 'Active',
+				value: toIndianFormat(stateData[state]['districtData'][district]['active']),
+				inline: true
+			},
+			{
+				name: 'Recovered',
+				value: toIndianFormat(stateData[state]['districtData'][district]['recovered']),
+				inline: true
+			},
+			{
+				name: 'Deaths',
+				value: toIndianFormat(stateData[state]['districtData'][district]['deceased']),
+				inline: true
+			}
+		);
+
+	message.channel.send(casesEmbed);
+}

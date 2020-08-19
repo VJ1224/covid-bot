@@ -56,7 +56,7 @@ client.on('message', message => {
 	}
 
 	if (command.args && !args.length) {
-		let reply = 'No arguments provided.';
+		let reply = 'No arguments provided.\n';
 
 		if (command.usage) {
 			reply += `Usage: ${process.env.PREFIX}${command.name} ${command.usage}`;
