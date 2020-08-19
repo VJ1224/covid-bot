@@ -1,24 +1,21 @@
-const fetch = require('node-fetch');
 const Discord = require('discord.js');
 require('dotenv').config();
+const { infermedica_axios } = require('../tools.js');
 
 module.exports = {
 	name: 'risks',
 	description: 'COVID-19 Risk Factors.',
 	usage: ' ',
 	execute: async function (message) {
-		const url = 'https://api.infermedica.com/covid19/risk_factors';
-		const options = {
-			headers: {
-				'App-Id': process.env.INFERMEDICA_ID,
-				'App-Key': process.env.INFERMEDICA_KEY,
-				'Content-Type': 'application/json',
-			},
-		};
+		let data;
 
-		const data = await fetch(url, options)
-			.then(response => response.json())
-			.catch(error => console.error(error));
+		try {
+			let response = await infermedica_axios.get('/risk_factors');
+			data = response.data;
+		} catch (e) {
+			console.error(e);
+			return;
+		}
 
 		let risks = '';
 		data.forEach(risk => {
@@ -29,6 +26,6 @@ module.exports = {
 			.setTitle('COVID-19 Risk Factors')
 			.setDescription(risks);
 
-		message.channel.send(casesEmbed);
+		await message.channel.send(casesEmbed);
 	},
 };

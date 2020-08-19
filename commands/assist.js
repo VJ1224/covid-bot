@@ -5,7 +5,7 @@ module.exports = {
 	aliases: ['emergency'],
 	description: 'COVID-19 help and resources.',
 	usage: ' ',
-	execute: function (message) {
+	execute: async function (message) {
 		const casesEmbed = new Discord.MessageEmbed()
 			.setTitle('COVID-19 Help for India')
 			.addFields(
@@ -41,6 +41,6 @@ module.exports = {
 				}
 			);
 
-		message.channel.send(casesEmbed);
+		await message.channel.send(casesEmbed);
 	},
 };

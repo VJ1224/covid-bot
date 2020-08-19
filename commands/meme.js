@@ -12,7 +12,6 @@ module.exports = {
 			.then(response => response.json())
 			.catch(error => console.error(error));
 
-		// noinspection JSUnusedAssignment
 		let posts = message.channel.nsfw ? memes.data.children.filter(post => post.data.post_hint === 'image') : memes.data.children.filter(post => !post.data.over_18 && post.data.post_hint === 'image');
 
 		if (!posts.length) return message.reply('Sorry, we are currently out of memes! Try again later.');
@@ -25,6 +24,6 @@ module.exports = {
 			.setImage(posts[random_number].data.url)
 			.setFooter(`Memes from ${subreddit}`);
 
-		message.channel.send(memeEmbed);
+		await message.channel.send(memeEmbed);
 	},
 };

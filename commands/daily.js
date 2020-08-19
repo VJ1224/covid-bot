@@ -33,6 +33,6 @@ module.exports = {
 				}
 			);
 
-		message.channel.send(casesEmbed);
+		await message.channel.send(casesEmbed);
 	},
 };

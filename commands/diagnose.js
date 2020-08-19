@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const axios = require('axios')
 require('dotenv').config();
+const { infermedica_axios } = require('../tools.js');
 
 
 module.exports = {
@@ -42,7 +42,7 @@ module.exports = {
 		let diagnosis = await getDiagnosis(person, evidence, '/diagnosis');
 
 		if (!diagnosis) {
-			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
@@ -68,7 +68,7 @@ module.exports = {
 						'choice_id': 'absent'
 					})
 				} catch (error) {
-					message.channel.send('**Exiting diagnostic tool for COVID-19**');
+					await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 					console.error(error);
 					return;
 				}
@@ -77,7 +77,7 @@ module.exports = {
 			diagnosis = await getDiagnosis(person, evidence, '/diagnosis');
 
 			if (!diagnosis) {
-				message.channel.send('**Exiting diagnostic tool for COVID-19**');
+				await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 				return;
 			}
 		}
@@ -85,7 +85,7 @@ module.exports = {
 		let result = await getDiagnosis(person, evidence,'/triage');
 
 		if (!result) {
-			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
@@ -93,17 +93,9 @@ module.exports = {
 			.setTitle(`Diagnosis Results: ${result.label}`)
 			.setDescription(result.description);
 
-		message.channel.send(resultEmbed);
+		await message.channel.send(resultEmbed);
 	},
 };
-
-const axios_instance = axios.create({
-	baseURL: 'https://api.infermedica.com/covid19',
-	headers: {
-		'App-Id': process.env.INFERMEDICA_ID,
-		'App-Key': process.env.INFERMEDICA_KEY
-	}
-});
 
 async function askGender(message, person) {
 	const genderFilter = (reaction, user) => {
@@ -142,7 +134,7 @@ async function askAge(message, person) {
 
 async function getDiagnosis(person, evidence, endpoint) {
 	try {
-		let response = await axios_instance.post(endpoint, {
+		let response = await infermedica_axios.post(endpoint, {
 			'age': person.age,
 			'sex': person.sex,
 			'evidence': evidence

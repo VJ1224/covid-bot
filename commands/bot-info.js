@@ -5,7 +5,7 @@ module.exports = {
 	name: 'bot-info',
 	description: 'Bot Information',
 	usage: ' ',
-	execute: function (message) {
+	execute: async function (message) {
 		const infoEmbed = new Discord.MessageEmbed()
 			.setTitle('COVID-19 India Bot')
 			.setDescription(`A COVID-19 Information bot that gives updates regarding the cases in India. 
@@ -15,6 +15,6 @@ module.exports = {
 			.setFooter('Author: Vansh Jain')
 			.setURL('https://github.com/VJ1224/covid-bot');
 
-		message.channel.send(infoEmbed);
+		await message.channel.send(infoEmbed);
 	},
 };

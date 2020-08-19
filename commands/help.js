@@ -6,7 +6,7 @@ module.exports = {
 	description: 'List all of my commands or info about a specific command.',
 	aliases: ['commands'],
 	usage: '[command name]',
-	execute: function (message, args) {
+	execute: async function (message, args) {
 		const data = [];
 		const {commands} = message.client;
 		const helpEmbed = new Discord.MessageEmbed();
@@ -43,6 +43,6 @@ module.exports = {
 		if (command.description) data.push(`**Description:** ${command.description}`);
 		if (command.usage) data.push(`**Usage:** ${process.env.PREFIX}${command.name} ${command.usage}`);
 
-		message.channel.send(data, {split: true});
+		await message.channel.send(data, {split: true});
 	},
 };

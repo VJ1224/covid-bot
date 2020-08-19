@@ -61,7 +61,7 @@ module.exports = {
 				}
 			);
 
-		message.channel.send(casesEmbed);
+		await message.channel.send(casesEmbed);
 	},
 };
 
@@ -115,5 +115,5 @@ async function districtData(message, stateCode, district) {
 			}
 		);
 
-	message.channel.send(casesEmbed);
+	await message.channel.send(casesEmbed);
 }

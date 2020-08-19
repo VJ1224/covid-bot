@@ -29,14 +29,13 @@ module.exports = {
             .then(response => response.json())
             .catch(error => console.error(error));
 
-
         let state = nationalData['statewise'][index]['state'];
         const population = stateData[stateCode]['meta']['population'];
         const totalCases = stateData[stateCode]['total']['confirmed'];
         const recoveredCases = stateData[stateCode]['total']['recovered'];
         const recoveryRate = ((recoveredCases / totalCases) * 100).toFixed(2);
 
-        const casesEmbed = new Discord.MessageEmbed()
+        const statsEmbed = new Discord.MessageEmbed()
             .setTitle(`COVID-19 Stats: ${state}, India`)
             .addFields(
                 {
@@ -61,6 +60,6 @@ module.exports = {
                 }
             );
 
-        message.channel.send(casesEmbed);
+        await message.channel.send(statsEmbed);
     },
 };

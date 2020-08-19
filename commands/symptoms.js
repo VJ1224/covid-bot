@@ -1,24 +1,21 @@
-const fetch = require('node-fetch');
 const Discord = require('discord.js');
 require('dotenv').config();
+const { infermedica_axios } = require('../tools.js');
 
 module.exports = {
 	name: 'symptoms',
 	description: 'COVID-19 symptoms.',
 	usage: ' ',
 	execute: async function (message) {
-		const url = 'https://api.infermedica.com/covid19/symptoms';
-		const options = {
-			headers: {
-				'App-Id': process.env.INFERMEDICA_ID,
-				'App-Key': process.env.INFERMEDICA_KEY,
-				'Content-Type': 'application/json',
-			},
-		};
+		let data;
 
-		const data = await fetch(url, options)
-			.then(response => response.json())
-			.catch(error => console.error(error));
+		try {
+			let response = await infermedica_axios.get('/symptoms');
+			data = response.data;
+		} catch (e) {
+			console.error(e);
+			return;
+		}
 
 		let symptoms = '';
 		data.forEach(symptom => {
@@ -29,6 +26,6 @@ module.exports = {
 			.setTitle('COVID-19 Symptoms')
 			.setDescription(symptoms);
 
-		message.channel.send(casesEmbed);
+		await message.channel.send(casesEmbed);
 	},
 };

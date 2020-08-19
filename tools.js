@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const axios = require('axios');
 
 const toIndianFormat = (number) => {
 	number = number.toString();
@@ -39,8 +40,17 @@ const checkValidState = async (state) => {
 	return -1;
 };
 
+const infermedica_axios = axios.create({
+	baseURL: 'https://api.infermedica.com/covid19',
+	headers: {
+		'App-Id': process.env.INFERMEDICA_ID,
+		'App-Key': process.env.INFERMEDICA_KEY
+	}
+});
+
 module.exports = {
 	toIndianFormat,
 	checkValidDistrict,
-	checkValidState
+	checkValidState,
+	infermedica_axios
 };
