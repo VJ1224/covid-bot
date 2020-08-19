@@ -30,10 +30,15 @@ module.exports = {
             .catch(error => console.error(error));
 
         let state = nationalData['statewise'][index]['state'];
+
         const population = stateData[stateCode]['meta']['population'];
         const totalCases = stateData[stateCode]['total']['confirmed'];
         const recoveredCases = stateData[stateCode]['total']['recovered'];
+        const deaths = stateData[stateCode]['total']['deceased'];
+
         const recoveryRate = ((recoveredCases / totalCases) * 100).toFixed(2);
+        const deathRate = ((deaths / totalCases) * 100).toFixed(2);
+        const infectedRate = ((totalCases / population) * 100).toFixed(2);
 
         const statsEmbed = new Discord.MessageEmbed()
             .setTitle(`COVID-19 Stats: ${state}, India`)
@@ -54,8 +59,23 @@ module.exports = {
                     inline: true
                 },
                 {
+                    name: 'Deaths',
+                    value: toIndianFormat(deaths),
+                    inline: true
+                },
+                {
+                    name: 'Infected Rate',
+                    value: `${infectedRate}%`,
+                    inline: true
+                },
+                {
                     name: 'Recovery Rate',
                     value: `${recoveryRate}%`,
+                    inline: true
+                },
+                {
+                    name: 'Death Rate',
+                    value: `${deathRate}%`,
                     inline: true
                 }
             );
