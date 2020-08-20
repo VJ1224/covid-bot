@@ -12,12 +12,12 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
 	console.log('Connected');
 	console.log('Servers connected to:');
 	const guildNames = client.guilds.cache.map(guild => guild.name + ': ' + guild.id).join('\n');
 	console.log(guildNames);
-	client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help` }, status: 'online' });
+	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help` }, status: 'online' });
 });
 
 client.on('guildCreate', guild => {
@@ -32,7 +32,7 @@ client.on('guildDelete', guild => {
 	}
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 	if (message.author.bot) return;
 
 	if (message.mentions.has(client.user)) {
@@ -51,7 +51,7 @@ client.on('message', message => {
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) {
-		message.reply(`Not a valid command, use ${process.env.PREFIX}help to see a list of valid commands.`);
+		await message.reply(`Not a valid command, use ${process.env.PREFIX}help to see a list of valid commands.`);
 		return;
 	}
 
@@ -70,7 +70,7 @@ client.on('message', message => {
 	}
 	catch (error) {
 		console.error(error);
-		message.reply('There was an error trying to execute that command.');
+		await message.reply('There was an error trying to execute that command.');
 	}
 });
 

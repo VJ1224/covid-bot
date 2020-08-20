@@ -22,14 +22,14 @@ module.exports = {
 		await askGender(message, person);
 
 		if (!person.sex) {
-			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
 		await askAge(message, person);
 
 		if (!person.age) {
-			message.channel.send('**Exiting diagnostic tool for COVID-19**');
+			await message.channel.send('**Exiting diagnostic tool for COVID-19**');
 			return;
 		}
 
