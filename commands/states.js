@@ -25,20 +25,18 @@ module.exports = {
         description += '| ' + addWhiteSpace('Recovered', 10);
         description += '| ' + addWhiteSpace('Deaths', 8);
 
-        let count = 0, limit = 10;
+        let count = -1, limit = 10;
 
-        for (let state in statesArray) {
-            // noinspection JSIncompatibleTypesComparison
-            if (state === 0) continue;
+        for (let state of statesArray) {
+            count++;
+            if (count === 0) continue;
             if (count === limit) break;
 
-            description += `\n${addWhiteSpace(statesArray[state]['state'], 15)}`;
-            description += `| ${addWhiteSpace(toIndianFormat(statesArray[state]['confirmed']), 10)}`;
-            description += `| ${addWhiteSpace(toIndianFormat(statesArray[state]['active']), 10)}`;
-            description += `| ${addWhiteSpace(toIndianFormat(statesArray[state]['recovered']), 10)}`;
-            description += `| ${addWhiteSpace(toIndianFormat(statesArray[state]['deaths']), 8)}`;
-
-            count++;
+            description += `\n${addWhiteSpace(state['state'], 15)}`;
+            description += `| ${addWhiteSpace(toIndianFormat(state['confirmed']), 10)}`;
+            description += `| ${addWhiteSpace(toIndianFormat(state['active']), 10)}`;
+            description += `| ${addWhiteSpace(toIndianFormat(state['recovered']), 10)}`;
+            description += `| ${addWhiteSpace(toIndianFormat(state['deaths']), 8)}`;
         }
 
         description += '```';
