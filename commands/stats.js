@@ -4,7 +4,7 @@ const { toIndianFormat, checkValidState } = require('../tools.js');
 
 module.exports = {
     name: 'stats',
-    description: 'Statistics about the COVID-19 cases in India and state-wise',
+    description: 'Statistics about the COVID-19 cases in India.',
     usage: '[statecode]',
     execute: async function (message, args) {
         let stateCode;

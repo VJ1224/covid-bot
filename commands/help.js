@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = {
 	name: 'help',
-	description: 'List all of my commands or info about a specific command.',
+	description: 'List all of commands and command specific info.',
 	aliases: ['commands'],
 	usage: '[command name]',
 	execute: async function (message, args) {

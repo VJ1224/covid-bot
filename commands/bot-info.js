@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = {
 	name: 'bot-info',
-	description: 'Bot Information',
+	description: 'About the bot',
 	usage: ' ',
 	execute: async function (message) {
 		const infoEmbed = new Discord.MessageEmbed()
