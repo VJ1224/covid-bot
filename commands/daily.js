@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const { toIndianFormat } = require('../tools.js');
+const { toIndianFormat, errorMessage } = require('../tools.js');
 
 module.exports = {
 	name: 'daily',
@@ -9,7 +9,10 @@ module.exports = {
 	execute: async function (message) {
 		const nationalData = await fetch('https://api.covid19india.org/data.json')
 			.then(response => response.json())
-			.catch(error => console.error(error));
+			.catch(error => {
+				console.error(error);
+				errorMessage(message);
+			});
 
 		const length = nationalData['cases_time_series'].length;
 

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const { checkValidState, checkValidDistrict, toIndianFormat } = require('../tools.js');
+const { checkValidState, checkValidDistrict, toIndianFormat, errorMessage } = require('../tools.js');
 
 module.exports = {
 	name: 'cases',
@@ -22,16 +22,19 @@ module.exports = {
 		} else
 			stateCode = 'TT';
 
-		const nationalData = await fetch('https://api.covid19india.org/data.json')
-			.then(response => response.json())
-			.catch(error => console.error(error));
-
 		let index = await checkValidState(stateCode);
 
 		if (index === -1) {
 			message.channel.send(`Not a valid statecode, use ${process.env.PREFIX}state-list to see a list of statecodes`);
 			return;
 		}
+
+		const nationalData = await fetch('https://api.covid19india.org/data.json')
+			.then(response => response.json())
+			.catch(error => {
+				console.error(error);
+				errorMessage(message);
+			});
 
 		const casesEmbed = new Discord.MessageEmbed()
 			.setTitle(`COVID-19 Cases: ${nationalData['statewise'][index]['state']}, India`)
@@ -68,11 +71,17 @@ module.exports = {
 async function districtData(message, stateCode, district) {
 	const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
 		.then(response => response.json())
-		.catch(error => console.error(error));
+		.catch(error => {
+			console.error(error);
+			errorMessage(message);
+		});
 
 	const nationalData = await fetch('https://api.covid19india.org/data.json')
 		.then(response => response.json())
-		.catch(error => console.error(error));
+		.catch(error => {
+			console.error(error);
+			errorMessage(message);
+		});
 
 	let index = await checkValidState(stateCode);
 

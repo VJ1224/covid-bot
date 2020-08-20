@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const { toIndianFormat, checkValidState } = require('../tools.js');
+const { toIndianFormat, checkValidState, errorMessage } = require('../tools.js');
 
 module.exports = {
     name: 'stats',
@@ -23,11 +23,17 @@ module.exports = {
 
         const stateData = await fetch('https://api.covid19india.org/v4/data.json')
             .then(response => response.json())
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                errorMessage(message);
+            });
 
         const nationalData = await fetch('https://api.covid19india.org/data.json')
             .then(response => response.json())
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                errorMessage(message);
+            });
 
         let state = nationalData['statewise'][index]['state'];
 

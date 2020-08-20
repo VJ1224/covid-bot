@@ -48,9 +48,19 @@ const infermedica_axios = axios.create({
 	}
 });
 
+const addWhiteSpace = (value, size) => {
+	return value.padEnd(size).substring(0, size);
+}
+
+const errorMessage = async (message) => {
+	message.channel.send('Sorry, the bot is not available right now!');
+}
+
 module.exports = {
 	toIndianFormat,
 	checkValidDistrict,
 	checkValidState,
-	infermedica_axios
+	infermedica_axios,
+	addWhiteSpace,
+	errorMessage
 };

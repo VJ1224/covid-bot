@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { toIndianFormat } = require('../tools.js');
+const { toIndianFormat, addWhiteSpace, errorMessage } = require('../tools.js');
 
 module.exports = {
     name: 'states',
@@ -8,11 +8,14 @@ module.exports = {
     execute: async function (message, args) {
         const nationalData = await fetch('https://api.covid19india.org/data.json')
             .then(response => response.json())
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                errorMessage(message);
+            });
 
         let statesArray = [];
-        for (let state in nationalData['statewise']) {
-            statesArray.push(nationalData['statewise'][state]);
+        for (let state of nationalData['statewise']) {
+            statesArray.push(state);
         }
 
         statesArray.sort(function(a,b){return b['confirmed'] - a['confirmed']});
@@ -47,7 +50,3 @@ module.exports = {
         await message.channel.send(statesMessage, {split: splitOptions});
     },
 };
-
-function addWhiteSpace(value, size) {
-    return value.padEnd(size).substring(0, size);
-}

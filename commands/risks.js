@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 require('dotenv').config();
-const { infermedica_axios } = require('../tools.js');
+const { infermedica_axios, errorMessage } = require('../tools.js');
 
 module.exports = {
 	name: 'risks',
@@ -14,6 +14,7 @@ module.exports = {
 			data = response.data;
 		} catch (e) {
 			console.error(e);
+			await errorMessage(message);
 			return;
 		}
 
