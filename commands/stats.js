@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 const Discord = require('discord.js');
 const { toIndianFormat, checkValidState, errorMessage, fetchAsync } = require('../tools.js');
 
