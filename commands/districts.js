@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-const { toIndianFormat, checkValidState, addWhiteSpace, errorMessage } = require('../tools.js');
+const { toIndianFormat, checkValidState, addWhiteSpace, errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
     name: 'districts',
@@ -15,19 +14,23 @@ module.exports = {
             return;
         }
 
-        const nationalData = await fetch('https://api.covid19india.org/data.json')
-            .then(response => response.json())
-            .catch(error => {
-                console.error(error);
-                errorMessage(message);
-            });
+        let stateData;
+        try {
+            stateData = await fetchAsync('https://api.covid19india.org/state_district_wise.json');
+        } catch (e) {
+            console.error(e);
+            await errorMessage(message);
+            return;
+        }
 
-        const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
-            .then(response => response.json())
-            .catch(error => {
-                console.error(error);
-                errorMessage(message);
-            });
+        let nationalData;
+        try {
+            nationalData = await fetchAsync('https://api.covid19india.org/data.json');
+        } catch (e) {
+            console.error(e);
+            await errorMessage(message);
+            return;
+        }
 
         let state = nationalData['statewise'][index]['state'];
         let districtsData = [];

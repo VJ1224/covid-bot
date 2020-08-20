@@ -1,17 +1,18 @@
-const fetch = require('node-fetch');
-const { toIndianFormat, addWhiteSpace, errorMessage } = require('../tools.js');
+const { toIndianFormat, addWhiteSpace, errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
     name: 'states',
     description: 'India\'s COVID-19 cases sorted by state.',
     usage: ' ',
     execute: async function (message, args) {
-        const nationalData = await fetch('https://api.covid19india.org/data.json')
-            .then(response => response.json())
-            .catch(error => {
-                console.error(error);
-                errorMessage(message);
-            });
+        let nationalData;
+        try {
+            nationalData = await fetchAsync('https://api.covid19india.org/data.json');
+        } catch (e) {
+            console.error(e);
+            await errorMessage(message);
+            return;
+        }
 
         let statesArray = [];
         for (let state of nationalData['statewise']) {

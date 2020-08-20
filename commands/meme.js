@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
-const { errorMessage } = require('../tools.js');
+const { errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
 	name: 'memes',
@@ -9,12 +8,15 @@ module.exports = {
 	usage: ' ',
 	execute: async function (message) {
 		const subreddit = 'r/CoronavirusMemes';
-		const memes = await fetch(`https://www.reddit.com/${subreddit}/hot/.json?limit=100`)
-			.then(response => response.json())
-			.catch(error => {
-				console.error(error);
-				errorMessage(message);
-			});
+
+		let memes;
+		try {
+			memes = await fetchAsync(`https://www.reddit.com/${subreddit}/hot/.json?limit=100`);
+		} catch (e) {
+			console.error(e);
+			await errorMessage(message);
+			return;
+		}
 
 		let posts = message.channel.nsfw ? memes.data.children.filter(post => post.data.post_hint === 'image') : memes.data.children.filter(post => !post.data.over_18 && post.data.post_hint === 'image');
 

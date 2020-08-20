@@ -74,4 +74,5 @@ client.on('message', async message => {
 	}
 });
 
+// noinspection JSIgnoredPromiseFromCall
 client.login(process.env.TOKEN);

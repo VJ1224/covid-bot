@@ -12,9 +12,13 @@ const toIndianFormat = (number) => {
 };
 
 const checkValidDistrict = async (district, state) => {
-	const stateData = await fetch('https://api.covid19india.org/state_district_wise.json')
-		.then(response => response.json())
-		.catch(error => console.error(error));
+	let stateData;
+	try {
+		stateData = await fetchAsync('https://api.covid19india.org/state_district_wise.json');
+	} catch (e) {
+		console.error(e);
+		return false;
+	}
 
 	for (const i in stateData[state]['districtData']) {
 		if (i === district) {
@@ -26,9 +30,13 @@ const checkValidDistrict = async (district, state) => {
 };
 
 const checkValidState = async (state) => {
-	const nationalData = await fetch('https://api.covid19india.org/data.json')
-		.then(response => response.json())
-		.catch(error => console.error(error));
+	let nationalData;
+	try {
+		nationalData = await fetchAsync('https://api.covid19india.org/data.json');
+	} catch (e) {
+		console.error(e);
+		return false;
+	}
 
 	for (const i in nationalData['statewise']) {
 		const temp = nationalData['statewise'][i]['statecode'];
@@ -56,11 +64,17 @@ const errorMessage = async (message) => {
 	message.channel.send('Sorry, the bot is not available right now!');
 }
 
+const fetchAsync = async (url) => {
+	let response = await fetch(url);
+	return await response.json();
+}
+
 module.exports = {
 	toIndianFormat,
 	checkValidDistrict,
 	checkValidState,
 	infermedica_axios,
 	addWhiteSpace,
-	errorMessage
+	errorMessage,
+	fetchAsync
 };

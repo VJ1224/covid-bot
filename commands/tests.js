@@ -1,19 +1,19 @@
-const fetch = require('node-fetch');
 const Discord = require('discord.js');
-const {errorMessage} = require("../tools");
-const { toIndianFormat } = require('../tools.js');
+const { toIndianFormat, errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
 	name: 'tests',
 	description: 'India\'s COVID-19 test numbers.',
 	usage: ' ',
 	execute: async function (message) {
-		const nationalData = await fetch('https://api.covid19india.org/data.json')
-			.then(response => response.json())
-			.catch(error => {
-				console.error(error);
-				errorMessage(message);
-			});
+		let nationalData;
+		try {
+			nationalData = await fetchAsync('https://api.covid19india.org/data.json');
+		} catch (e) {
+			console.error(e);
+			await errorMessage(message);
+			return;
+		}
 
 		const last = nationalData['tested'].length - 1;
 
