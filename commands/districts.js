@@ -54,7 +54,7 @@ module.exports = {
 
         let districtsMessage = `**COVID-19 Cases in ${state} by District**`;
         districtsMessage += '```\n';
-        districtsMessage += addWhiteSpace('District', 15);
+        districtsMessage += addWhiteSpace('District', 20);
         districtsMessage += '| ' + addWhiteSpace('Confirmed', 10);
         districtsMessage += '| ' + addWhiteSpace('Active', 10);
         districtsMessage += '| ' + addWhiteSpace('Recovered', 10);
@@ -66,7 +66,7 @@ module.exports = {
             count++;
             if (count === limit) break;
 
-            districtsMessage += `\n${addWhiteSpace(districtNames[district], 15)}`;
+            districtsMessage += `\n${addWhiteSpace(districtNames[district], 20)}`;
             districtsMessage += `| ${addWhiteSpace(toIndianFormat(districtsData[district]['confirmed']), 10)}`;
             districtsMessage += `| ${addWhiteSpace(toIndianFormat(districtsData[district]['active']), 10)}`;
             districtsMessage += `| ${addWhiteSpace(toIndianFormat(districtsData[district]['recovered']), 10)}`;
