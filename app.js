@@ -35,10 +35,6 @@ client.on('guildDelete', guild => {
 client.on('message', async message => {
 	if (message.author.bot) return;
 
-	if (message.mentions.has(client.user)) {
-		client.commands.get('bot-info').execute(message, []);
-	}
-
 	message.content = message.content.replace(/<@!?(\d+)>/g, '');
 	message.content = message.content.trim();
 
