@@ -26,6 +26,9 @@ module.exports = {
             y.push(nationalData['cases_time_series'][i]['totalconfirmed']);
         }
 
+        const start_date = nationalData['cases_time_series'][length - limit]['date'];
+        const end_date = nationalData['cases_time_series'][length - 1]['date'];
+
         let data = [{
             x:x, y:y,
             mode: 'lines+markers',
@@ -41,7 +44,7 @@ module.exports = {
         }];
 
         let options = {
-            title: "COVID-19 India Timeline",
+            title: `COVID-19 India Trend: ${start_date} - ${end_date}`,
             xaxis: {
                 title: 'Date'
             },
@@ -53,7 +56,7 @@ module.exports = {
         plotly.plot(data, options, async (error, response) => {
             if (error) return console.log(error);
             const graphEmbed = new Discord.MessageEmbed()
-                .setTitle('COVID-19 Timeline: India')
+                .setTitle(`COVID-19 India Trend: ${start_date} - ${end_date}`)
                 .setImage(response.url + '.png');
 
             await message.channel.send(graphEmbed);
