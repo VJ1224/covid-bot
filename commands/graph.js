@@ -5,6 +5,7 @@ const plotly = require('plotly')("VJ1224", process.env.PLOTLY_KEY);
 
 module.exports = {
     name: 'graph',
+    cooldown: 10,
     description: 'Graph of India\'s COVID-19 Cases',
     usage: '[days]',
     execute: async function (message, args) {
@@ -20,6 +21,7 @@ module.exports = {
         const length = nationalData['cases_time_series'].length;
         let x = [], y = [];
         let limit = (args.length >= 1) ? parseInt(args[0]) : 10;
+        limit = (limit > length) ? length : limit;
 
         for (let i = length - limit; i < length; i++) {
             x.push(nationalData['cases_time_series'][i]['date']);
