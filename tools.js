@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 const axios = require('axios');
 
 const toIndianFormat = (number) => {
@@ -65,8 +64,12 @@ const errorMessage = async (message) => {
 }
 
 const fetchAsync = async (url) => {
-	let response = await fetch(url);
-	return await response.json();
+	try {
+		const response = await axios.get(url);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 module.exports = {
