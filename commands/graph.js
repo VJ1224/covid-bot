@@ -93,6 +93,9 @@ module.exports = {
                         display:true,
                         labelString: 'Time',
                         fontColor: '#eeeeee'
+                    },
+                    gridLines: {
+                        display: false
                     }
                 }],
                 yAxes: [{
@@ -104,10 +107,7 @@ module.exports = {
                         labelString: 'Cases',
                         fontColor: '#eeeeee'
                     }
-                }],
-                gridLines: {
-                    display: false
-                }
+                }]
             }
         };
 
