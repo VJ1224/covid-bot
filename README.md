@@ -12,7 +12,7 @@ To add the bot to your server, [click here](https://discord.com/oauth2/authorize
 
 * Discord.js: npm install discord.js
 
-* Fetch: npm install node-fetch
+* Axios: npm install axios
 
 * Dotenv: npm install dotenv
 
@@ -20,7 +20,7 @@ To add the bot to your server, [click here](https://discord.com/oauth2/authorize
 
 * app.js: Stores the main bot logic to read messages and execute commands.
 
-* commands: Folder that stores each command in a seperate .js file. Each .js file exports the execute function as well as relevant information about the command.
+* commands: Folder that stores each command in a separate .js file. Each .js file exports the execute function as well as relevant information about the command.
 
 * tools.js: Additional functions that are common for multiple commands.
 
@@ -40,8 +40,12 @@ Deployed using Heroku
 
 * COVID19 India Data:
 
-   <https://api.covid19india.org/>
+   [covid19india.org](https://api.covid19india.org)
 
 * Medical Data:
 
-   <https://developer.infermedica.com>
+   [Infermedica](https://developer.infermedica.com)
+   
+* Image Chart API:
+   
+   [QuickChart](https://quickchart.io)
