@@ -52,11 +52,11 @@ module.exports = {
             mode: 'lines+markers',
             name: 'Recovered',
             marker: {
-                color: 'rgb(55, 128, 191)',
+                color: 'rgb(61,132,168)',
                 size: 8
             },
             line: {
-                color: 'rgb(55, 128, 191)',
+                color: 'rgb(61,132,168)',
                 width: 1
             }
         }
@@ -66,11 +66,11 @@ module.exports = {
             mode: 'lines+markers',
             name: 'Deaths',
             marker: {
-                color: 'rgb(219, 64, 82)',
+                color: 'rgb(232,69,69)',
                 size: 8
             },
             line: {
-                color: 'rgb(219, 64, 82)',
+                color: 'rgb(232,69,69)',
                 width: 1
             }
         }
@@ -78,13 +78,7 @@ module.exports = {
         let data = [confirmedLine, recoveredLine, deceasedLine];
 
         let options = {
-            title: `COVID-19 India Trend: ${start_date} - ${end_date}`,
-            xaxis: {
-                title: 'Date'
-            },
-            yaxis: {
-                title: 'Cases'
-            }
+            title: `COVID-19 India Trend: ${start_date} - ${end_date}`
         };
 
         plotly.plot(data, options, async (error, response) => {
