@@ -14,7 +14,7 @@ module.exports = {
 
 			if (args.length > 1) {
 				args = args.splice(1);
-				let district = args.join(' ');
+				let district = args.join(' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');;
 				await districtData(message, stateCode, district);
 				return;
 			}
