@@ -1,12 +1,12 @@
+const { MessageEmbed } = require('discord.js');
 require('dotenv').config();
-const Discord = require('discord.js');
 
 module.exports = {
 	name: 'bot-info',
 	description: 'About the bot',
 	usage: ' ',
 	execute: async function (message) {
-		const infoEmbed = new Discord.MessageEmbed()
+		const infoEmbed = new MessageEmbed()
 			.setTitle('COVID-19 India Bot')
 			.setDescription(`A COVID-19 Information bot that gives updates regarding the cases in India. 
 							 Also includes a diagnostic tool to check for COVID-19 as well as common symptoms and risk factors. 

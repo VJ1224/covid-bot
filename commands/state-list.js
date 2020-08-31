@@ -1,4 +1,4 @@
-const {errorMessage, fetchAsync} = require("../tools");
+const { errorMessage, fetchAsync } = require("../tools");
 
 module.exports = {
 	name: 'state-list',

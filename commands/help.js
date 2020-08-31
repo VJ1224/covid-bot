@@ -1,5 +1,5 @@
+const { MessageEmbed } = require('discord.js');
 require('dotenv').config();
-const Discord = require('discord.js');
 
 module.exports = {
 	name: 'help',
@@ -9,7 +9,7 @@ module.exports = {
 	execute: async function (message, args) {
 		const data = [];
 		const {commands} = message.client;
-		const helpEmbed = new Discord.MessageEmbed();
+		const helpEmbed = new MessageEmbed();
 
 		if (!args.length) {
 			helpEmbed.setTitle('List of all my Commands');

@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 
 		const random_number = Math.floor(Math.random() * posts.length);
 
-		const memeEmbed = new Discord.MessageEmbed()
+		const memeEmbed = new MessageEmbed()
 			.setTitle(posts[random_number].data.title)
 			.setDescription(`Posted by: ${posts[random_number].data.author}`)
 			.setImage(posts[random_number].data.url)

@@ -45,7 +45,7 @@ Deployed using Heroku
 * Medical Data:
 
    [Infermedica](https://developer.infermedica.com)
-   
+
 * Image Chart API:
-   
+
    [QuickChart](https://quickchart.io)

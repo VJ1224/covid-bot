@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'assist',
@@ -6,7 +6,7 @@ module.exports = {
 	description: 'COVID-19 help and resources.',
 	usage: ' ',
 	execute: async function (message) {
-		const casesEmbed = new Discord.MessageEmbed()
+		const casesEmbed = new MessageEmbed()
 			.setTitle('COVID-19 Help for India')
 			.addFields(
 				{

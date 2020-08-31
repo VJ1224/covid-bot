@@ -1,7 +1,7 @@
-require('dotenv').config();
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { errorMessage, fetchAsync } = require('../tools.js');
-const axios = require('axios');
+const { post } = require('axios');
+require('dotenv').config();
 
 module.exports = {
     name: 'graph',
@@ -121,9 +121,9 @@ module.exports = {
         };
 
         try {
-            const response = await axios.post('https://quickchart.io/chart/create', {chart: casesChart});
+            const response = await post('https://quickchart.io/chart/create', {chart: casesChart});
 
-            const graphEmbed = new Discord.MessageEmbed()
+            const graphEmbed = new MessageEmbed()
                 .setTitle(`COVID-19 India Trend: ${start_date} - ${end_date}`)
                 .setImage(response.data.url);
 

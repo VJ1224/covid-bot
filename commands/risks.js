@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
-require('dotenv').config();
+const { MessageEmbed } = require('discord.js');
 const { infermedica_axios, errorMessage } = require('../tools.js');
+require('dotenv').config();
 
 module.exports = {
 	name: 'risks',
@@ -23,7 +23,7 @@ module.exports = {
 			risks = risks.concat(' - ', risk.common_name, '\n');
 		});
 
-		const casesEmbed = new Discord.MessageEmbed()
+		const casesEmbed = new MessageEmbed()
 			.setTitle('COVID-19 Risk Factors')
 			.setDescription(risks);
 

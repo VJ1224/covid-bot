@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed }= require('discord.js');
 const { toIndianFormat, errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
 
 		const last = nationalData['tested'].length - 1;
 
-		const casesEmbed = new Discord.MessageEmbed()
+		const casesEmbed = new MessageEmbed()
 			.setTitle('COVID-19 Tests in India')
 			.addFields(
 				{

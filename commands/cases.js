@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { checkValidState, checkValidDistrict, toIndianFormat, errorMessage, fetchAsync } = require('../tools.js');
 
 module.exports = {
@@ -37,7 +37,7 @@ module.exports = {
 			return;
 		}
 
-		const casesEmbed = new Discord.MessageEmbed()
+		const casesEmbed = new MessageEmbed()
 			.setTitle(`COVID-19 Cases: ${nationalData['statewise'][index]['state']}, India`)
 			.addFields(
 				{

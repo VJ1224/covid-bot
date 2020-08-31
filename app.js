@@ -1,13 +1,13 @@
-const Discord = require('discord.js');
-const fs = require('fs');
+const { Client, Collection} = require('discord.js');
+const { readdirSync } = require('fs');
 require('dotenv').config();
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const client = new Client();
+client.commands = new Collection();
 
 // Reads every file in the commands directory with a .js extension
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const cooldowns = new Discord.Collection();
+const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
+const cooldowns = new Collection();
 
 // For each file in commands it adds the command to a collection
 for (const file of commandFiles) {
@@ -43,7 +43,7 @@ client.on('message', async message => {
 	// Ignore messages by a bot
 	if (message.author.bot) return;
 
-	// Removes all @ Discord mentions
+	// Removes all @ mentions
 	message.content = message.content.replace(/<@!?(\d+)>/g, '');
 	message.content = message.content.trim();
 
@@ -77,7 +77,7 @@ client.on('message', async message => {
 
 	// If the cooldown is not in the collection, add it
 	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
+		cooldowns.set(command.name, new Collection());
 	}
 
 	// Get current time and get list of time stamps in collection

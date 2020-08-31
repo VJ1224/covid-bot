@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
-require('dotenv').config();
+const { MessageEmbed } = require('discord.js');
 const { infermedica_axios } = require('../tools.js');
+require('dotenv').config();
 
 
 module.exports = {
@@ -89,7 +89,7 @@ module.exports = {
 			return;
 		}
 
-		const resultEmbed = new Discord.MessageEmbed()
+		const resultEmbed = new MessageEmbed()
 			.setTitle(`Diagnosis Results: ${result.label}`)
 			.setDescription(result.description);
 
