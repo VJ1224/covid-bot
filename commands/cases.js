@@ -104,7 +104,7 @@ async function districtData(message, stateCode, district) {
 		return;
 	}
 
-	const casesEmbed = new Discord.MessageEmbed()
+	const casesEmbed = new MessageEmbed()
 		.setTitle(`COVID-19 Cases in ${district}, ${state}, India`)
 		.addFields(
 			{
