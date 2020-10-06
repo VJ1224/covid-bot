@@ -22,7 +22,9 @@ client.on('ready', async () => {
 	console.log('Servers connected to:');
 	const guildNames = client.guilds.cache.map(guild => guild.name + ': ' + guild.id).join('\n');
 	console.log(guildNames);
-	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help` }, status: 'online' });
+	const total = client.guilds.cache.size;
+	console.log(`Total: ${total}`);
+	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help | Currently in ${total} servers` }, status: 'online' });
 });
 
 client.on('guildCreate', guild => {
