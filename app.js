@@ -27,18 +27,22 @@ client.on('ready', async () => {
 	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help | Currently in ${total} servers` }, status: 'online' });
 });
 
-client.on('guildCreate', guild => {
+client.on('guildCreate', async guild => {
 	// Log when added to a guild
 	if (guild.available) {
 		console.log(`Added to: ${guild.name}: ${guild.id}`);
 	}
+	const total = client.guilds.cache.size;
+	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help | Currently in ${total} servers` }, status: 'online' });
 });
 
-client.on('guildDelete', guild => {
+client.on('guildDelete', async guild => {
 	// Log when removed from a guild
 	if (guild.available) {
 		console.log(`Removed from: ${guild.name}: ${guild.id}`);
 	}
+	const total = client.guilds.cache.size;
+	await client.user.setPresence({ activity: { name: `Plague Inc. | ${process.env.PREFIX} help | Currently in ${total} servers` }, status: 'online' });
 });
 
 client.on('message', async message => {
