@@ -11,6 +11,6 @@ module.exports = {
             .addField('GitHub Repo', '[COVID-19 India Bot Issues](https://github.com/VJ1224/covid-bot/issues)')
             .addField('Official Server', '[Join Vansh Jain\'s Server](https://discord.gg/4yBuYqK)');
 
-        await message.author.send(messageEmbed);
+        await message.channel.send(messageEmbed);
     },
 };
