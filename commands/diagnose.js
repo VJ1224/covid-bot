@@ -17,7 +17,12 @@ module.exports = {
 			age: undefined
 		}
 
-		message = await message.author.send('**Beginning diagnostic tool for COVID-19**');
+		try {
+			message = await message.author.send('**Beginning diagnostic tool for COVID-19**');
+		} catch (e) {
+			await message.reply('Unable to send DM. Could not start diagnostic tool.');
+			return;
+		}
 
 		await askGender(message, person);
 

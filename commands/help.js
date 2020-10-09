@@ -18,16 +18,14 @@ module.exports = {
 				helpEmbed.addField(command.name, command.description);
 			});
 
-			return message.author.send(helpEmbed)
-				.then(() => {
-					if (message.channel.type === 'dm') return;
-					message.reply('A DM has been sent to you with a list of commands.');
-				})
-				.catch(error => {
-					console.error(`Could not send help DM to ${message.author.tag}`, error);
-					message.reply('Unable to send DM with list of commands.');
-					message.channel.send(helpEmbed);
-				});
+			try {
+				await message.author.send(helpEmbed);
+				if (message.channel.type === 'dm') return;
+				message.reply('A DM has been sent to you with a list of commands.');
+			} catch(error) {
+				message.reply('Unable to send DM with list of commands.');
+				await message.channel.send(helpEmbed);
+			}
 		}
 
 		const name = args[0].toLowerCase();
