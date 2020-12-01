@@ -26,6 +26,8 @@ module.exports = {
 				message.reply('Unable to send DM with list of commands.');
 				await message.channel.send(helpEmbed);
 			}
+
+			return;
 		}
 
 		const name = args[0].toLowerCase();
